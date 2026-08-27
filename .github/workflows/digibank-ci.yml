@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main", "develop" ]
 
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.head_ref || github.ref}}
+      cancel-in-progress: true
+
 jobs:
   build-and-test:
     name: Build, Test & Package
@@ -28,13 +32,21 @@ jobs:
       - name: Execute Maven Verification
         run: mvn clean verify -B
 
+      - name: Run unit tests
+        run: mvn test 
+
       # Step 4: Archive the built application JAR
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
-        if: success()
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
         with:
-          name: digibank-web-artifact
-          path: digibank-web/target/*.jar
+          name: digibank-web-executable-jar
+          path: | 
+            digibank-web/target/*.jar
+            !digibank-web/target/*-sources.jar
+            !digibank-web/target/*-javadoc.jar
+            !digibank-web/target/*.jar.original
+          if-no-files-found: error
           retention-days: 7
 
       # Step 5: Set up Docker Buildx for container validation
