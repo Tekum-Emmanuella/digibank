@@ -6,21 +6,22 @@ on:
   pull_request:
     branches: [ "main", "develop" ]
 
-    concurrency:
-      group: digibank-ci-${{ github.head_ref || github.ref}}
-      cancel-in-progress: true
-
 jobs:
   build-and-test:
     name: Build, Test & Package
     runs-on: ubuntu-latest
 
+    # Move concurrency inside the job
+    concurrency:
+      group: digibank-${{ github.head_ref || github.ref }}
+      cancel-in-progress: true
+
     steps:
-      # Step 1: Check out source code
+      # Step 1: Check out repository source
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Java 17 Temurin with Maven dependency caching
+      # Step 2: Set up JDK 17 (Temurin) with dependency caching
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -28,12 +29,9 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      # Step 3: Run full Maven build, unit tests, integration tests & BDD checks
+      # Step 3: Run full Maven lifecycle verification (Unit, Integration & BDD tests)
       - name: Execute Maven Verification
         run: mvn clean verify -B
-
-      - name: Run unit tests
-        run: mvn test 
 
       # Step 4: Archive the built application JAR
       - name: Upload Build Artifact
@@ -41,7 +39,7 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
         with:
           name: digibank-web-executable-jar
-          path: | 
+          path: |
             digibank-web/target/*.jar
             !digibank-web/target/*-sources.jar
             !digibank-web/target/*-javadoc.jar
@@ -49,11 +47,11 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-      # Step 5: Set up Docker Buildx for container validation
+      # Step 5: Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Step 6: Validate Docker build reproducibility
+      # Step 6: Validate Docker image build reproducibility
       - name: Build Docker Image
         uses: docker/build-push-action@v5
         with:
