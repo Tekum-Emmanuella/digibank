@@ -2,29 +2,50 @@ name: DigiBank CI Pipeline
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [ "main", "develop" ]
 
 jobs:
-  build-test-package:
+  build-and-test:
+    name: Build, Test & Package
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout source code
+      # Step 1: Check out source code
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Set up Java 17
+      # Step 2: Set up Java 17 Temurin with Maven dependency caching
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 17
-          cache: maven
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
 
-      - name: Build and run tests
-        run: mvn clean verify
+      # Step 3: Run full Maven build, unit tests, integration tests & BDD checks
+      - name: Execute Maven Verification
+        run: mvn clean verify -B
 
-      - name: Build JAR package
-        run: mvn clean package -DskipTests
+      # Step 4: Archive the built application JAR
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: digibank-web-artifact
+          path: digibank-web/target/*.jar
+          retention-days: 7
 
-      - name: Build Docker image
-        run: docker build -t digibank-app:ci .
+      # Step 5: Set up Docker Buildx for container validation
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Step 6: Validate Docker build reproducibility
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: digibank-app:ci-latest
