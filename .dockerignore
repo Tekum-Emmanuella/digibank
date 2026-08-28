@@ -1,8 +1,0 @@
-target/
-!digibank-web/target/*.jar
-.git
-.gitignore
-.idea
-*.iml
-.mvn
-README.md
