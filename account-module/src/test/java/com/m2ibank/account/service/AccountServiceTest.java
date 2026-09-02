@@ -105,8 +105,8 @@ class AccountServiceTest {
         AccountRequest request = accountRequest();
         when(accountRepository.findByAccountNumber(anyString())).thenReturn(Optional.of(existingAccount()));
 
-        IllegalStateException exception = assertThrows(
-                IllegalStateException.class,
+        BusinessException exception = assertThrows(
+                BusinessException.class,
                 () -> accountService.createAccount(request)
         );
 
@@ -237,8 +237,8 @@ class AccountServiceTest {
         Account account = existingAccount();
         BigDecimal negativeAmount = new BigDecimal("-1.00");
 
-        assertThrows(IllegalArgumentException.class, () -> accountService.debitAccount(account, BigDecimal.ZERO));
-        assertThrows(IllegalArgumentException.class, () -> accountService.debitAccount(account, negativeAmount));
+        assertThrows(BusinessException.class, () -> accountService.debitAccount(account, BigDecimal.ZERO));
+        assertThrows(BusinessException.class, () -> accountService.debitAccount(account, negativeAmount));
 
         assertEquals(new BigDecimal("100000.00"), account.getBalance());
         verify(accountRepository, never()).save(any(Account.class));
@@ -249,8 +249,8 @@ class AccountServiceTest {
         Account account = existingAccount();
         BigDecimal negativeAmount = new BigDecimal("-1.00");
 
-        assertThrows(IllegalArgumentException.class, () -> accountService.creditAccount(account, BigDecimal.ZERO));
-        assertThrows(IllegalArgumentException.class, () -> accountService.creditAccount(account, negativeAmount));
+        assertThrows(BusinessException.class, () -> accountService.creditAccount(account, BigDecimal.ZERO));
+        assertThrows(BusinessException.class, () -> accountService.creditAccount(account, negativeAmount));
 
         assertEquals(new BigDecimal("100000.00"), account.getBalance());
         verify(accountRepository, never()).save(any(Account.class));

@@ -108,7 +108,7 @@ public class AccountService {
             }
         }
 
-        throw new IllegalStateException("Unable to generate a unique account number");
+        throw new BusinessException("Unable to generate a unique account number");
     }
 
     private AccountResponse mapToResponse(Account account) {
@@ -124,19 +124,19 @@ public class AccountService {
 
     private void validateAccount(Account account) {
         if (account == null) {
-            throw new IllegalArgumentException("Account is required");
+            throw new BusinessException("Account is required");
         }
         if (account.getBalance() == null) {
-            throw new IllegalArgumentException("Account balance is required");
+            throw new BusinessException("Account balance is required");
         }
     }
 
     private void validatePositiveAmount(BigDecimal amount) {
         if (amount == null) {
-            throw new IllegalArgumentException("Amount is required");
+            throw new BusinessException("Amount is required");
         }
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than zero");
+            throw new BusinessException("Amount must be greater than zero");
         }
     }
 
