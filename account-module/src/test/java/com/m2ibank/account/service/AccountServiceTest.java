@@ -5,7 +5,9 @@ import com.m2ibank.account.dto.AccountResponse;
 import com.m2ibank.account.entity.Account;
 import com.m2ibank.account.entity.AccountType;
 import com.m2ibank.account.repository.AccountRepository;
+import com.m2ibank.common.exception.BusinessException;
 import com.m2ibank.common.exception.ResourceNotFoundException;
+import com.m2ibank.customer.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -40,11 +43,14 @@ class AccountServiceTest {
     @Mock
     private AccountRepository accountRepository;
 
+    @Mock
+    private CustomerService customerService;
+
     private AccountService accountService;
 
     @BeforeEach
     void setUp() {
-        accountService = new AccountService(accountRepository, () -> "DB-00000001");
+        accountService = new AccountService(accountRepository, customerService, () -> "DB-00000001");
     }
 
     @Test
@@ -71,6 +77,7 @@ class AccountServiceTest {
         verify(accountRepository).save(accountCaptor.capture());
         assertEquals("DB-00000001", accountCaptor.getValue().getAccountNumber());
         assertEquals(new BigDecimal("100000.00"), accountCaptor.getValue().getBalance());
+        verify(customerService).getCustomerEntityById(1L);
     }
 
     @Test
@@ -79,7 +86,7 @@ class AccountServiceTest {
         Supplier<String> accountNumberSupplier = () -> counter.getAndIncrement() == 0
                 ? "DB-00000001"
                 : "DB-00000002";
-        accountService = new AccountService(accountRepository, accountNumberSupplier);
+        accountService = new AccountService(accountRepository, customerService, accountNumberSupplier);
 
         when(accountRepository.findByAccountNumber("DB-00000001")).thenReturn(Optional.of(existingAccount()));
         when(accountRepository.findByAccountNumber("DB-00000002")).thenReturn(Optional.empty());
@@ -90,6 +97,7 @@ class AccountServiceTest {
         assertEquals("DB-00000002", response.getAccountNumber());
         verify(accountRepository).findByAccountNumber("DB-00000001");
         verify(accountRepository).findByAccountNumber("DB-00000002");
+        verify(customerService).getCustomerEntityById(1L);
     }
 
     @Test
@@ -105,6 +113,22 @@ class AccountServiceTest {
         assertEquals("Unable to generate a unique account number", exception.getMessage());
         verify(accountRepository, times(10)).findByAccountNumber("DB-00000001");
         verify(accountRepository, never()).save(any(Account.class));
+    }
+
+    @Test
+    void shouldThrowResourceNotFoundExceptionWhenCreatingAccountForUnknownCustomer() {
+        AccountRequest request = accountRequest();
+        when(customerService.getCustomerEntityById(1L))
+                .thenThrow(new ResourceNotFoundException("Customer not found with id 1"));
+
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> accountService.createAccount(request)
+        );
+
+        assertEquals("Customer not found with id 1", exception.getMessage());
+        verify(accountRepository, never()).save(any(Account.class));
+        verify(accountRepository, never()).findByAccountNumber(anyString());
     }
 
     @Test
@@ -154,6 +178,21 @@ class AccountServiceTest {
 
         assertEquals(2, accounts.size());
         assertTrue(accounts.stream().allMatch(account -> account.getCustomerId().equals(2L)));
+        verify(customerService).getCustomerEntityById(2L);
+    }
+
+    @Test
+    void shouldThrowResourceNotFoundExceptionWhenListingAccountsForUnknownCustomer() {
+        when(customerService.getCustomerEntityById(9L))
+                .thenThrow(new ResourceNotFoundException("Customer not found with id 9"));
+
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> accountService.getAccountsByCustomerId(9L)
+        );
+
+        assertEquals("Customer not found with id 9", exception.getMessage());
+        verify(accountRepository, never()).findByCustomerId(eq(9L));
     }
 
     @Test
@@ -172,12 +211,12 @@ class AccountServiceTest {
         Account account = existingAccount();
         BigDecimal debitAmount = new BigDecimal("100000.01");
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        BusinessException exception = assertThrows(
+                BusinessException.class,
                 () -> accountService.debitAccount(account, debitAmount)
         );
 
-        assertEquals("Insufficient balance", exception.getMessage());
+        assertEquals("Insufficient balance for transfer", exception.getMessage());
         assertEquals(new BigDecimal("100000.00"), account.getBalance());
         verify(accountRepository, never()).save(any(Account.class));
     }

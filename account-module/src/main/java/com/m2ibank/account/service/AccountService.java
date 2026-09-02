@@ -4,7 +4,9 @@ import com.m2ibank.account.dto.AccountRequest;
 import com.m2ibank.account.dto.AccountResponse;
 import com.m2ibank.account.entity.Account;
 import com.m2ibank.account.repository.AccountRepository;
+import com.m2ibank.common.exception.BusinessException;
 import com.m2ibank.common.exception.ResourceNotFoundException;
+import com.m2ibank.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,21 +24,24 @@ public class AccountService {
     private static final int MAX_ACCOUNT_NUMBER_ATTEMPTS = 10;
 
     private final AccountRepository accountRepository;
+    private final CustomerService customerService;
     private final Supplier<String> accountNumberSupplier;
 
     @Autowired
-    public AccountService(AccountRepository accountRepository) {
-        this(accountRepository, new SecureRandomAccountNumberSupplier());
+    public AccountService(AccountRepository accountRepository, CustomerService customerService) {
+        this(accountRepository, customerService, new SecureRandomAccountNumberSupplier());
     }
 
-    AccountService(AccountRepository accountRepository, Supplier<String> accountNumberSupplier) {
+    AccountService(AccountRepository accountRepository, CustomerService customerService, Supplier<String> accountNumberSupplier) {
         this.accountRepository = Objects.requireNonNull(accountRepository, "accountRepository must not be null");
+        this.customerService = Objects.requireNonNull(customerService, "customerService must not be null");
         this.accountNumberSupplier = Objects.requireNonNull(accountNumberSupplier, "accountNumberSupplier must not be null");
     }
 
     @Transactional
     public AccountResponse createAccount(AccountRequest request) {
         Objects.requireNonNull(request, "request must not be null");
+        customerService.getCustomerEntityById(request.getCustomerId());
 
         String accountNumber = generateUniqueAccountNumber();
         Account account = new Account(
@@ -56,6 +61,7 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public List<AccountResponse> getAccountsByCustomerId(Long customerId) {
+        customerService.getCustomerEntityById(customerId);
         return accountRepository.findByCustomerId(customerId)
                 .stream()
                 .map(this::mapToResponse)
@@ -78,7 +84,7 @@ public class AccountService {
         validatePositiveAmount(amount);
 
         if (account.getBalance().compareTo(amount) < 0) {
-            throw new IllegalArgumentException("Insufficient balance");
+            throw new BusinessException("Insufficient balance for transfer");
         }
 
         account.setBalance(account.getBalance().subtract(amount));

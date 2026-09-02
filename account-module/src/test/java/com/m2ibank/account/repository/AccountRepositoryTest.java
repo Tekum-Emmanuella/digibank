@@ -88,6 +88,24 @@ class AccountRepositoryTest {
     }
 
     @Test
+    void shouldFindAccountByAccountNumberAndCustomerId() {
+        Account account = new Account(
+                "DB-1006",
+                new BigDecimal("200000.00"),
+                AccountType.CURRENT,
+                5L
+        );
+        accountRepository.save(account);
+
+        Optional<Account> foundAccount = accountRepository.findByAccountNumberAndCustomerId("DB-1006", 5L);
+        Optional<Account> notOwnedAccount = accountRepository.findByAccountNumberAndCustomerId("DB-1006", 6L);
+
+        assertTrue(foundAccount.isPresent());
+        assertFalse(notOwnedAccount.isPresent());
+        assertEquals(5L, foundAccount.get().getCustomerId());
+    }
+
+    @Test
     void shouldReturnEmptyWhenAccountNumberDoesNotExist() {
         Optional<Account> foundAccount = accountRepository.findByAccountNumber("DB-9999");
 
