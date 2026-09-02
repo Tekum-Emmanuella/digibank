@@ -43,7 +43,7 @@ Creates a new customer in the system.
 **Validation Rules:**
 - `fullName`: Required, maximum 120 characters
 - `email`: Required, must be valid email format
-- `phoneNumber`: Required, 9-15 characters
+- `phoneNumber`: Required, 9 to 30 characters (max 30 characters)
 - `nationalId`: Required, maximum 30 characters
 
 **Response:** `201 Created`
