@@ -1,6 +1,6 @@
 # DigiBank — DevSecOps Core Banking System (Modular Monolith)
 
-[![Build & Verification Pipeline](https://github.com/organization/digibank/actions/workflows/digibank-ci.yml/badge.svg)](https://github.com/organization/digibank/actions/workflows/digibank-ci.yml)
+[![Build & Verification Pipeline](https://github.com/organization/digibank/actions/workflows/digibank-ci.yml/badge.svg)](https://github.com/Tekum-Emmanuella/digibank/actions)
 [![Java 17](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
@@ -10,7 +10,7 @@ DigiBank is an enterprise-grade core banking application built with Java 17 and 
 
 ---
 
-## 1. Architectural Overview
+## 2. Architectural Overview
 
 The application is structured as a Maven multi-module project to enforce domain decoupling, separation of concerns, and maintainability:
 
@@ -46,7 +46,7 @@ digibank-parent/
 
 ---
 
-## 2. Prerequisites & Tooling
+## 3. Prerequisites & Tooling
 
 Ensure the following runtimes and tools are installed locally:
 
@@ -58,7 +58,7 @@ Ensure the following runtimes and tools are installed locally:
 
 ---
 
-## 3. Configuration & Profiles
+## 4. Configuration & Profiles
 
 DigiBank provides environment-specific profiles:
 
@@ -78,7 +78,7 @@ Key properties configured in `digibank-web/src/main/resources/application.yml`:
 
 ---
 
-## 4. Maven Lifecycle & Build Commands
+## 5. Maven Lifecycle & Build Commands
 
 Execute these commands from the repository root:
 
@@ -111,7 +111,7 @@ mvn -pl digibank-web spring-boot:run -Dspring-boot.run.profiles=dev
 
 ---
 
-## 5. Docker & Container Orchestration
+## 6. Docker & Container Orchestration
 
 DigiBank provides a multi-stage `Dockerfile` and a `docker-compose.yml` for zero-configuration, reproducible local deployment.
 
@@ -150,7 +150,7 @@ docker compose down -v
 
 ---
 
-## 6. Database Migrations (Flyway)
+## 7. Database Migrations (Flyway)
 
 All relational tables and seed baseline records are automated via Flyway migrations located in `digibank-web/src/main/resources/db/migration/`:
 
@@ -161,7 +161,7 @@ All relational tables and seed baseline records are automated via Flyway migrati
 
 ---
 
-## 7. API Endpoints & Swagger Documentation
+## 8. API Endpoints & Swagger Documentation
 
 Once the application is running, access the interactive OpenAPI documentation:
 * **Interactive Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
@@ -183,7 +183,7 @@ Once the application is running, access the interactive OpenAPI documentation:
 
 ---
 
-## 8. Automated Testing Suite
+## 9. Automated Testing Suite
 
 The testing framework incorporates three layers:
 
@@ -195,7 +195,7 @@ The testing framework incorporates three layers:
 
 ---
 
-## 9. DevSecOps CI Pipeline
+## 10. DevSecOps CI Pipeline
 
 The continuous integration pipeline is defined in `.github/workflows/digibank-ci.yml`:
 * Triggers automatically on `push` and `pull_request` against `main` and `develop` branches.
@@ -208,7 +208,7 @@ The continuous integration pipeline is defined in `.github/workflows/digibank-ci
 
 ---
 
-## 10. Submission Artifacts & Verification Proofs
+## 11. Submission Artifacts & Verification Proofs
 
 Teacher-required verification artifacts and submission screenshots are cataloged in the [`docs/evidence/`](docs/evidence/) directory:
 
