@@ -15,7 +15,7 @@ public class CustomerRequest {
     private String email;
 
     @NotBlank(message = "Phone number is required")
-    @Size(min = 9, max = 15, message = "Phone number must be between 9 and 15 digits")
+    @Size(min = 9, max = 30, message = "Phone number must be between 9 and 30 characters")
     private String phoneNumber;
 
     @NotBlank(message = "National ID is required")
