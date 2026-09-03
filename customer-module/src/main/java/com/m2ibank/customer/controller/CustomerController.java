@@ -1,6 +1,6 @@
 package com.m2ibank.customer.controller;
 
-import com.m2ibank.common.dto.ApiResponse;
+import com.m2ibank.common.api.ApiResponse;
 import com.m2ibank.customer.dto.CustomerRequest;
 import com.m2ibank.customer.dto.CustomerResponse;
 import com.m2ibank.customer.service.CustomerService;
