@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------
+  # Database Service: PostgreSQL 16
+  # -------------------------------------------------------------
+  digibank-db:
+    image: postgres:16-alpine
+    container_name: digibank-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: digibank_db
+      POSTGRES_USER: digibank_user
+      POSTGRES_PASSWORD: digibank_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - digibank_pgdata:/var/lib/postgresql/data
+    networks:
+      - digibank-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U digibank_user -d digibank_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # -------------------------------------------------------------
+  # Application Service: DigiBank Spring Boot Modular Monolith
+  # -------------------------------------------------------------
+  digibank-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: digibank-application
+    restart: on-failure
+    depends_on:
+      digibank-db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://digibank-db:5432/digibank_db
+      SPRING_DATASOURCE_USERNAME: digibank_user
+      SPRING_DATASOURCE_PASSWORD: digibank_password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+    networks:
+      - digibank-net
+
+# -------------------------------------------------------------
+# Volumes & Networks Definitions
+# -------------------------------------------------------------
+volumes:
+  digibank_pgdata:
+    driver: local
+
+networks:
+  digibank-net:
+    driver: bridge
