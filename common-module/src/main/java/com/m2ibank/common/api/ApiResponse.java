@@ -1,4 +1,4 @@
-package com.m2ibank.common.dto;
+package com.m2ibank.common.api;
 
 import java.time.LocalDateTime;
 
