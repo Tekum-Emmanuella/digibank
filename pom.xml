@@ -28,6 +28,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>3.3.2</spring.boot.version>
         <springdoc.version>2.6.0</springdoc.version>
+        <swagger-annotations.version>2.2.22</swagger-annotations.version>
         <cucumber.version>7.18.0</cucumber.version>
         <junit.version>5.10.2</junit.version>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
@@ -41,6 +42,11 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger-annotations.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
