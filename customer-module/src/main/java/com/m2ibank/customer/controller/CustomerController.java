@@ -30,18 +30,18 @@ public class CustomerController {
     public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(@Valid @RequestBody CustomerRequest request) {
         CustomerResponse response = customerService.createCustomer(request);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(true, "Customer created successfully", response));
+                .body(ApiResponse.success("Customer created successfully", response));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerById(@PathVariable Long id) {
         CustomerResponse response = customerService.getCustomerById(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Customer retrieved successfully", response));
+        return ResponseEntity.ok(ApiResponse.success("Customer retrieved successfully", response));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<CustomerResponse>>> getAllCustomers() {
         List<CustomerResponse> list = customerService.getAllCustomers();
-        return ResponseEntity.ok(new ApiResponse<>(true, "Customers retrieved successfully", list));
+        return ResponseEntity.ok(ApiResponse.success("Customers retrieved successfully", list));
     }
 }
