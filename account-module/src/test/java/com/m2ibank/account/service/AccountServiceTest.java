@@ -21,8 +21,6 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,13 +48,13 @@ class AccountServiceTest {
 
     @BeforeEach
     void setUp() {
-        accountService = new AccountService(accountRepository, customerService, () -> "DB-00000001");
+        accountService = new AccountService(accountRepository, customerService);
     }
 
     @Test
     void shouldCreateAccountSuccessfully() throws Exception {
         AccountRequest request = accountRequest();
-        when(accountRepository.findByAccountNumber("DB-00000001")).thenReturn(Optional.empty());
+        when(accountRepository.findByAccountNumber(anyString())).thenReturn(Optional.empty());
         when(accountRepository.save(any(Account.class))).thenAnswer(invocation -> {
             Account account = invocation.getArgument(0);
             setField(account, "id", 1L);
@@ -67,7 +65,8 @@ class AccountServiceTest {
         AccountResponse response = accountService.createAccount(request);
 
         assertEquals(1L, response.getId());
-        assertEquals("DB-00000001", response.getAccountNumber());
+        assertTrue(response.getAccountNumber().startsWith("DB-"));
+        assertEquals(11, response.getAccountNumber().length()); // DB- + 8 chars
         assertEquals(request.getInitialBalance(), response.getBalance());
         assertEquals(request.getAccountType(), response.getAccountType());
         assertEquals(request.getCustomerId(), response.getCustomerId());
@@ -75,28 +74,22 @@ class AccountServiceTest {
 
         ArgumentCaptor<Account> accountCaptor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(accountCaptor.capture());
-        assertEquals("DB-00000001", accountCaptor.getValue().getAccountNumber());
+        assertTrue(accountCaptor.getValue().getAccountNumber().startsWith("DB-"));
         assertEquals(new BigDecimal("100000.00"), accountCaptor.getValue().getBalance());
         verify(customerService).getCustomerEntityById(1L);
     }
 
     @Test
     void shouldGenerateAnotherAccountNumberWhenFirstNumberAlreadyExists() {
-        AtomicInteger counter = new AtomicInteger();
-        Supplier<String> accountNumberSupplier = () -> counter.getAndIncrement() == 0
-                ? "DB-00000001"
-                : "DB-00000002";
-        accountService = new AccountService(accountRepository, customerService, accountNumberSupplier);
-
-        when(accountRepository.findByAccountNumber("DB-00000001")).thenReturn(Optional.of(existingAccount()));
-        when(accountRepository.findByAccountNumber("DB-00000002")).thenReturn(Optional.empty());
+        when(accountRepository.findByAccountNumber(anyString()))
+                .thenReturn(Optional.of(existingAccount()))
+                .thenReturn(Optional.empty());
         when(accountRepository.save(any(Account.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         AccountResponse response = accountService.createAccount(accountRequest());
 
-        assertEquals("DB-00000002", response.getAccountNumber());
-        verify(accountRepository).findByAccountNumber("DB-00000001");
-        verify(accountRepository).findByAccountNumber("DB-00000002");
+        assertTrue(response.getAccountNumber().startsWith("DB-"));
+        verify(accountRepository, times(2)).findByAccountNumber(anyString());
         verify(customerService).getCustomerEntityById(1L);
     }
 
@@ -111,7 +104,7 @@ class AccountServiceTest {
         );
 
         assertEquals("Unable to generate a unique account number", exception.getMessage());
-        verify(accountRepository, times(10)).findByAccountNumber("DB-00000001");
+        verify(accountRepository, times(10)).findByAccountNumber(anyString());
         verify(accountRepository, never()).save(any(Account.class));
     }
 
@@ -170,8 +163,8 @@ class AccountServiceTest {
 
     @Test
     void shouldReturnAccountsByCustomerId() {
-        Account currentAccount = new Account("DB-00000003", new BigDecimal("50000.00"), AccountType.CURRENT, 2L);
-        Account savingsAccount = new Account("DB-00000004", new BigDecimal("150000.00"), AccountType.SAVINGS, 2L);
+        Account currentAccount = new Account("DB-ABCDEF01", new BigDecimal("50000.00"), AccountType.CURRENT, 2L);
+        Account savingsAccount = new Account("DB-ABCDEF02", new BigDecimal("150000.00"), AccountType.SAVINGS, 2L);
         when(accountRepository.findByCustomerId(2L)).thenReturn(List.of(currentAccount, savingsAccount));
 
         List<AccountResponse> accounts = accountService.getAccountsByCustomerId(2L);
@@ -265,7 +258,7 @@ class AccountServiceTest {
     }
 
     private Account existingAccount() {
-        return new Account("DB-00000001", new BigDecimal("100000.00"), AccountType.CURRENT, 1L);
+        return new Account("DB-ABCDEF01", new BigDecimal("100000.00"), AccountType.CURRENT, 1L);
     }
 
     private void setField(Account account, String fieldName, Object value) throws Exception {

@@ -35,9 +35,9 @@ public class Account {
     private Long id;
 
     @NotBlank(message = "Account number is required")
-    @Size(max = 50, message = "Account number must not exceed 50 characters")
+    @Size(max = 30, message = "Account number must not exceed 30 characters")
     @Pattern(regexp = "^DB-.+", message = "Account number must start with DB-")
-    @Column(name = "account_number", nullable = false, length = 50)
+    @Column(name = "account_number", nullable = false, length = 30)
     private String accountNumber;
 
     @NotNull(message = "Balance is required")
@@ -48,7 +48,7 @@ public class Account {
 
     @NotNull(message = "Account type is required")
     @Enumerated(EnumType.STRING)
-    @Column(name = "account_type", nullable = false, length = 30)
+    @Column(name = "account_type", nullable = false, length = 20)
     private AccountType accountType;
 
     @NotNull(message = "Customer ID is required")

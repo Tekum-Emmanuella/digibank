@@ -12,30 +12,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.UUID;
 
 @Service
 public class AccountService {
 
-    private static final int ACCOUNT_NUMBER_BOUND = 100_000_000;
     private static final int MAX_ACCOUNT_NUMBER_ATTEMPTS = 10;
 
     private final AccountRepository accountRepository;
     private final CustomerService customerService;
-    private final Supplier<String> accountNumberSupplier;
 
     @Autowired
     public AccountService(AccountRepository accountRepository, CustomerService customerService) {
-        this(accountRepository, customerService, new SecureRandomAccountNumberSupplier());
-    }
-
-    AccountService(AccountRepository accountRepository, CustomerService customerService, Supplier<String> accountNumberSupplier) {
         this.accountRepository = Objects.requireNonNull(accountRepository, "accountRepository must not be null");
         this.customerService = Objects.requireNonNull(customerService, "customerService must not be null");
-        this.accountNumberSupplier = Objects.requireNonNull(accountNumberSupplier, "accountNumberSupplier must not be null");
     }
 
     @Transactional
@@ -102,7 +94,7 @@ public class AccountService {
 
     private String generateUniqueAccountNumber() {
         for (int attempt = 0; attempt < MAX_ACCOUNT_NUMBER_ATTEMPTS; attempt++) {
-            String accountNumber = accountNumberSupplier.get();
+            String accountNumber = "DB-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
             if (accountRepository.findByAccountNumber(accountNumber).isEmpty()) {
                 return accountNumber;
             }
@@ -137,16 +129,6 @@ public class AccountService {
         }
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new BusinessException("Amount must be greater than zero");
-        }
-    }
-
-    private static final class SecureRandomAccountNumberSupplier implements Supplier<String> {
-
-        private final SecureRandom secureRandom = new SecureRandom();
-
-        @Override
-        public String get() {
-            return "DB-%08d".formatted(secureRandom.nextInt(ACCOUNT_NUMBER_BOUND));
         }
     }
 }

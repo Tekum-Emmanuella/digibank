@@ -1,25 +1,46 @@
-server:
-  port: 8080
-
 spring:
   application:
     name: digibank
-  datasource:
-    url: jdbc:postgresql://localhost:5432/digibankdb
-    username: digibank
-    password: digibank123
-    driver-class-name: org.postgresql.Driver
+
+  profiles:
+    active: dev
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    open-in-view: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        jdbc:
+          time_zone: UTC
+
+  thymeleaf:
+    cache: false
+
+  sql:
+    init:
+      mode: never
+
+server:
+  port: 8080
+  error:
+    include-message: never
+    include-binding-errors: never
+    include-stacktrace: never
 
 springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
   api-docs:
     path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

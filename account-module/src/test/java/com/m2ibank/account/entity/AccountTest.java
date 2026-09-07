@@ -107,7 +107,7 @@ class AccountTest {
 
         Column accountNumberColumn = accountNumberField.getAnnotation(Column.class);
         assertEquals("account_number", accountNumberColumn.name());
-        assertEquals(50, accountNumberColumn.length());
+        assertEquals(30, accountNumberColumn.length());
 
         Column balanceColumn = balanceField.getAnnotation(Column.class);
         assertEquals(19, balanceColumn.precision());
