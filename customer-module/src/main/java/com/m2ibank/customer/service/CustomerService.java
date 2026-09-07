@@ -54,6 +54,16 @@ public class CustomerService {
             .collect(Collectors.toList());
     }
 
+    public boolean existsByEmail(String email) {
+        return customerRepository.findByEmail(email).isPresent();
+    }
+
+    public CustomerResponse getCustomerByEmail(String email) {
+        Customer customer = customerRepository.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("Customer not found with email " + email));
+        return mapToResponse(customer);
+    }
+
     public Customer getCustomerEntityById(Long id) {
         return customerRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id " + id));

@@ -6,13 +6,25 @@ import com.m2ibank.account.service.AccountService;
 import com.m2ibank.customer.dto.CustomerRequest;
 import com.m2ibank.customer.dto.CustomerResponse;
 import com.m2ibank.customer.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+/**
+ * Seeds demonstration customers and accounts for local/educational use (Workshop §4.6).
+ * Idempotent by demo email: Alice/Brian are created only when those emails are missing.
+ * Runs on every profile; intentional for DigiBank labs, not a production-hardening pattern.
+ */
 @Component
 public class DataInitializer implements CommandLineRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
+
+    private static final String DEMO_ALICE_EMAIL = "alice@m2ibank.com";
+    private static final String DEMO_BRIAN_EMAIL = "brian@m2ibank.com";
 
     private final CustomerService customerService;
     private final AccountService accountService;
@@ -24,34 +36,60 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (customerService.getAllCustomers().isEmpty()) {
-            CustomerRequest customer1 = new CustomerRequest();
-            customer1.setFullName("Alice Ndzi");
-            customer1.setEmail("alice@m2ibank.com");
-            customer1.setPhoneNumber("+237600000001");
-            customer1.setNationalId("CNI000001");
+        boolean aliceExists = customerService.existsByEmail(DEMO_ALICE_EMAIL);
+        boolean brianExists = customerService.existsByEmail(DEMO_BRIAN_EMAIL);
 
-            CustomerRequest customer2 = new CustomerRequest();
-            customer2.setFullName("Brian Tchoumi");
-            customer2.setEmail("brian@m2ibank.com");
-            customer2.setPhoneNumber("+237600000002");
-            customer2.setNationalId("CNI000002");
-
-            CustomerResponse savedCustomer1 = customerService.createCustomer(customer1);
-            CustomerResponse savedCustomer2 = customerService.createCustomer(customer2);
-
-            AccountRequest account1 = new AccountRequest();
-            account1.setCustomerId(savedCustomer1.getId());
-            account1.setAccountType(AccountType.CURRENT);
-            account1.setInitialBalance(new BigDecimal("150000.00"));
-
-            AccountRequest account2 = new AccountRequest();
-            account2.setCustomerId(savedCustomer2.getId());
-            account2.setAccountType(AccountType.SAVINGS);
-            account2.setInitialBalance(new BigDecimal("90000.00"));
-
-            accountService.createAccount(account1);
-            accountService.createAccount(account2);
+        if (aliceExists && brianExists) {
+            log.info("Demo data seeding skipped: demo customers already exist ({}, {})",
+                    DEMO_ALICE_EMAIL, DEMO_BRIAN_EMAIL);
+            ensureDemoAccounts();
+            return;
         }
+
+        log.info("Seeding DigiBank demonstration customers and accounts");
+
+        CustomerResponse alice = aliceExists
+                ? customerService.getCustomerByEmail(DEMO_ALICE_EMAIL)
+                : createCustomer("Alice Ndzi", DEMO_ALICE_EMAIL, "+237600000001", "CNI000001");
+
+        CustomerResponse brian = brianExists
+                ? customerService.getCustomerByEmail(DEMO_BRIAN_EMAIL)
+                : createCustomer("Brian Tchoumi", DEMO_BRIAN_EMAIL, "+237600000002", "CNI000002");
+
+        ensureAccount(alice.getId(), AccountType.CURRENT, new BigDecimal("150000.00"));
+        ensureAccount(brian.getId(), AccountType.SAVINGS, new BigDecimal("90000.00"));
+
+        log.info(
+                "Demo data ready: customers id={} (Alice), id={} (Brian) with CURRENT and SAVINGS accounts",
+                alice.getId(),
+                brian.getId()
+        );
+    }
+
+    private void ensureDemoAccounts() {
+        CustomerResponse alice = customerService.getCustomerByEmail(DEMO_ALICE_EMAIL);
+        CustomerResponse brian = customerService.getCustomerByEmail(DEMO_BRIAN_EMAIL);
+        ensureAccount(alice.getId(), AccountType.CURRENT, new BigDecimal("150000.00"));
+        ensureAccount(brian.getId(), AccountType.SAVINGS, new BigDecimal("90000.00"));
+    }
+
+    private CustomerResponse createCustomer(String fullName, String email, String phoneNumber, String nationalId) {
+        CustomerRequest request = new CustomerRequest();
+        request.setFullName(fullName);
+        request.setEmail(email);
+        request.setPhoneNumber(phoneNumber);
+        request.setNationalId(nationalId);
+        return customerService.createCustomer(request);
+    }
+
+    private void ensureAccount(Long customerId, AccountType accountType, BigDecimal initialBalance) {
+        if (!accountService.getAccountsByCustomerId(customerId).isEmpty()) {
+            return;
+        }
+        AccountRequest accountRequest = new AccountRequest();
+        accountRequest.setCustomerId(customerId);
+        accountRequest.setAccountType(accountType);
+        accountRequest.setInitialBalance(initialBalance);
+        accountService.createAccount(accountRequest);
     }
 }
