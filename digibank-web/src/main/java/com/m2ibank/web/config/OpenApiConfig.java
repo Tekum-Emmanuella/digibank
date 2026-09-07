@@ -15,7 +15,7 @@ public class OpenApiConfig {
     public OpenAPI digiBankOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("DigiBank Core API")
+                        .title("DigiBank API")
                         .description("Core Banking DevSecOps Implementation")
                         .version("1.0.0")
                         .contact(new Contact()
