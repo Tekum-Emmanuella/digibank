@@ -12,6 +12,12 @@ target/
 # VS Code
 .vscode/
 
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
 # macOS
 .DS_Store
 
