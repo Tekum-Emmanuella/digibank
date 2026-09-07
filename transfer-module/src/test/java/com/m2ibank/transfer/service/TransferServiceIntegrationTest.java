@@ -5,6 +5,8 @@ import com.m2ibank.account.entity.AccountType;
 import com.m2ibank.account.repository.AccountRepository;
 import com.m2ibank.account.service.AccountService;
 import com.m2ibank.common.exception.BusinessException;
+import com.m2ibank.customer.repository.CustomerRepository;
+import com.m2ibank.customer.service.CustomerService;
 import com.m2ibank.transfer.dto.TransferRequest;
 import com.m2ibank.transfer.dto.TransferResponse;
 import com.m2ibank.transfer.repository.TransferRepository;
@@ -23,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
-@EnableJpaRepositories(basePackages = {"com.m2ibank.transfer.repository", "com.m2ibank.account.repository"})
-@EntityScan(basePackages = {"com.m2ibank.transfer.entity", "com.m2ibank.account.entity"})
+@EnableJpaRepositories(basePackages = {"com.m2ibank.transfer.repository", "com.m2ibank.account.repository", "com.m2ibank.customer.repository"})
+@EntityScan(basePackages = {"com.m2ibank.transfer.entity", "com.m2ibank.account.entity", "com.m2ibank.customer.entity"})
 class TransferServiceIntegrationTest {
 
     @Autowired
@@ -33,12 +35,15 @@ class TransferServiceIntegrationTest {
     @Autowired
     private TransferRepository transferRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     private AccountService accountService;
     private TransferService transferService;
 
     @BeforeEach
     void setUp() {
-        accountService = new AccountService(accountRepository);
+        accountService = new AccountService(accountRepository, new CustomerService(customerRepository));
         transferService = new TransferService(transferRepository, accountService);
     }
 
