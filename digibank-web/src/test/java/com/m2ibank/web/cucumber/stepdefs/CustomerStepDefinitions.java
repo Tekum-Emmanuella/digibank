@@ -1,6 +1,8 @@
 package com.m2ibank.web.cucumber.stepdefs;
 
 import com.m2ibank.customer.dto.CustomerRequest;
+import com.m2ibank.customer.entity.Customer;
+import com.m2ibank.customer.repository.CustomerRepository;
 import com.m2ibank.web.cucumber.TestContext;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -22,9 +24,34 @@ public class CustomerStepDefinitions {
     @Autowired
     private TestContext testContext;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @Given("the banking system is running")
     public void theBankingSystemIsRunning() {
         // The context is already loaded via @SpringBootTest
+    }
+
+    @Given("a customer with email {string} exists")
+    public void aCustomerWithEmailExists(String email) {
+        Customer customer = new Customer();
+        customer.setFullName("Test Customer");
+        customer.setEmail(email);
+        customer.setPhoneNumber("+237600000099");
+        customer.setNationalId("CNI000099");
+        customerRepository.save(customer);
+        testContext.setCurrentCustomer(customer);
+    }
+
+    @Given("a customer with phone number {string} exists")
+    public void aCustomerWithPhoneNumberExists(String phoneNumber) {
+        Customer customer = new Customer();
+        customer.setFullName("Test Customer");
+        customer.setEmail("test" + System.currentTimeMillis() + "@example.com");
+        customer.setPhoneNumber(phoneNumber);
+        customer.setNationalId("CNI" + System.currentTimeMillis());
+        customerRepository.save(customer);
+        testContext.setCurrentCustomer(customer);
     }
 
     @When("I submit a new customer request with the following details:")
@@ -45,6 +72,14 @@ public class CustomerStepDefinitions {
         assertThat(testContext.getResponse().getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
+    @Then("the customer creation should fail")
+    public void theCustomerCreationShouldFail() {
+        assertThat(testContext.getResponse().getStatusCode()).isIn(
+                HttpStatus.BAD_REQUEST,
+                HttpStatus.CONFLICT
+        );
+    }
+
     @Then("the response should contain status code {int}")
     public void theResponseShouldContainStatusCode(int statusCode) {
         assertThat(testContext.getResponse().getStatusCode().value()).isEqualTo(statusCode);
@@ -53,5 +88,11 @@ public class CustomerStepDefinitions {
     @Then("the response should indicate success")
     public void theResponseShouldIndicateSuccess() {
         assertThat(testContext.getResponse().getBody()).contains("\"success\":true");
+    }
+
+    @Then("the error message should contain {string}")
+    public void theErrorMessageShouldContain(String text) {
+        String responseBody = testContext.getResponse().getBody();
+        assertThat(responseBody).containsIgnoringCase(text);
     }
 }

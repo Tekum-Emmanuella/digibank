@@ -17,6 +17,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +36,7 @@ public class TransferStepDefinitions {
     @Autowired
     private TestContext testContext;
 
-    private Long accountId;
+    private final Map<String, Long> accountIdsByEmail = new HashMap<>();
 
     @Given("a customer with email {string} exists with a CURRENT account")
     public void aCustomerWithEmailExistsWithACurrentAccount(String email) {
@@ -42,8 +44,8 @@ public class TransferStepDefinitions {
         CustomerRequest customerRequest = new CustomerRequest();
         customerRequest.setFullName("Test Customer");
         customerRequest.setEmail(email);
-        customerRequest.setPhoneNumber("+237600000999");
-        customerRequest.setNationalId("CNI000999");
+        customerRequest.setPhoneNumber("+237" + System.currentTimeMillis() % 1000000);
+        customerRequest.setNationalId("CNI" + System.currentTimeMillis());
         
         CustomerResponse customer = customerService.createCustomer(customerRequest);
 
@@ -54,11 +56,34 @@ public class TransferStepDefinitions {
         accountRequest.setInitialBalance(new BigDecimal("100000.00"));
         
         AccountResponse account = accountService.createAccount(accountRequest);
-        accountId = account.getId();
+        accountIdsByEmail.put(email, account.getId());
+    }
+
+    @Given("a customer with email {string} exists with a CURRENT account having balance {double}")
+    public void aCustomerWithEmailExistsWithACurrentAccountHavingBalance(String email, Double balance) {
+        // Create customer
+        CustomerRequest customerRequest = new CustomerRequest();
+        customerRequest.setFullName("Test Customer");
+        customerRequest.setEmail(email);
+        customerRequest.setPhoneNumber("+237" + System.currentTimeMillis() % 1000000);
+        customerRequest.setNationalId("CNI" + System.currentTimeMillis());
+        
+        CustomerResponse customer = customerService.createCustomer(customerRequest);
+
+        // Create account for customer with specified balance
+        AccountRequest accountRequest = new AccountRequest();
+        accountRequest.setCustomerId(customer.getId());
+        accountRequest.setAccountType(AccountType.CURRENT);
+        accountRequest.setInitialBalance(new BigDecimal(balance));
+        
+        AccountResponse account = accountService.createAccount(accountRequest);
+        accountIdsByEmail.put(email, account.getId());
     }
 
     @When("I attempt to submit a transfer with the same source and destination account")
     public void iAttemptToSubmitATransferWithTheSameSourceAndDestinationAccount() {
+        Long accountId = accountIdsByEmail.values().iterator().next();
+        
         TransferRequest transferRequest = new TransferRequest();
         transferRequest.setSourceAccountId(accountId);
         transferRequest.setDestinationAccountId(accountId);
@@ -68,13 +93,27 @@ public class TransferStepDefinitions {
         testContext.setResponse(restTemplate.postForEntity("/api/transfers", transferRequest, String.class));
     }
 
+    @When("I submit a transfer of {double} from {string} to {string}")
+    public void iSubmitATransferOfFromTo(Double amount, String senderEmail, String receiverEmail) {
+        Long sourceAccountId = accountIdsByEmail.get(senderEmail);
+        Long destinationAccountId = accountIdsByEmail.get(receiverEmail);
+
+        TransferRequest transferRequest = new TransferRequest();
+        transferRequest.setSourceAccountId(sourceAccountId);
+        transferRequest.setDestinationAccountId(destinationAccountId);
+        transferRequest.setAmount(new BigDecimal(amount));
+        transferRequest.setDescription("Transfer for testing");
+
+        testContext.setResponse(restTemplate.postForEntity("/api/transfers", transferRequest, String.class));
+    }
+
     @Then("the transfer should be rejected")
     public void theTransferShouldBeRejected() {
         assertThat(testContext.getResponse().getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-    @Then("the error message should contain {string}")
-    public void theErrorMessageShouldContain(String errorMessage) {
-        assertThat(testContext.getResponse().getBody()).contains(errorMessage);
+    @Then("the transfer should succeed")
+    public void theTransferShouldSucceed() {
+        assertThat(testContext.getResponse().getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 }
