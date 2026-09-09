@@ -12,8 +12,10 @@ spring:
     active: dev
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      # Safe-by-default: the schema is owned by Flyway migrations, so the app must never
+      # auto-mutate it. Profiles must not weaken this back to "update"/"create".
+      ddl-auto: validate
+    show-sql: false
     open-in-view: false
     properties:
       hibernate:
@@ -27,9 +29,13 @@ spring:
       mode: never
 
 springdoc:
+  # Swagger/OpenAPI UI is disabled by default (increased attack/exposure surface if left on).
+  # It is explicitly re-enabled only in the dev profile (application-dev.yml).
   api-docs:
+    enabled: false
     path: /api-docs
   swagger-ui:
+    enabled: false
     path: /swagger-ui.html
     operationsSorter: method
     tagsSorter: alpha
@@ -38,5 +44,7 @@ logging:
   level:
     root: INFO
     org.springframework.web: INFO
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    # Query/bind-parameter logging must stay at INFO by default to avoid leaking sensitive
+    # data (account numbers, balances, national IDs...) into log files.
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO

@@ -20,7 +20,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -60,7 +59,8 @@ class CustomerServiceTest {
         assertEquals("John Doe", response.getFullName());
         assertEquals("john.doe@example.com", response.getEmail());
         assertEquals("+1234567890", response.getPhoneNumber());
-        assertEquals("ID123456", response.getNationalId());
+        // Workshop 2 remediation: nationalId is no longer exposed in the response DTO
+        // (data minimization); it is still persisted on the entity but not returned by the API.
         assertNotNull(response.getCreatedAt());
         verify(customerRepository).save(any(Customer.class));
     }
@@ -83,7 +83,9 @@ class CustomerServiceTest {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
             customerService.createCustomer(request);
         });
-        assertEquals("A customer with this email already exists", exception.getMessage());
+        // Workshop 2 remediation: a single generic message is used for every duplicate case
+        // so the client cannot infer which specific field (email vs phone) already exists.
+        assertEquals("A customer with these details already exists", exception.getMessage());
     }
 
     @Test
@@ -105,7 +107,7 @@ class CustomerServiceTest {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
             customerService.createCustomer(request);
         });
-        assertEquals("A customer with this phone number already exists", exception.getMessage());
+        assertEquals("A customer with these details already exists", exception.getMessage());
     }
 
     @Test
@@ -118,7 +120,9 @@ class CustomerServiceTest {
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
             customerService.getCustomerById(customerId);
         });
-        assertTrue(exception.getMessage().contains("Customer not found with id 999"));
+        // Workshop 2 remediation: the identifier is no longer echoed back to the client,
+        // which prevents resource-enumeration via error messages.
+        assertEquals("Customer not found", exception.getMessage());
     }
 
     @Test

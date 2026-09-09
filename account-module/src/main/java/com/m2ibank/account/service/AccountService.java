@@ -7,6 +7,8 @@ import com.m2ibank.account.repository.AccountRepository;
 import com.m2ibank.common.exception.BusinessException;
 import com.m2ibank.common.exception.ResourceNotFoundException;
 import com.m2ibank.customer.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +22,11 @@ import java.util.function.Supplier;
 @Service
 public class AccountService {
 
+    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
+
     private static final int ACCOUNT_NUMBER_BOUND = 100_000_000;
     private static final int MAX_ACCOUNT_NUMBER_ATTEMPTS = 10;
+    private static final String ACCOUNT_NOT_FOUND_MESSAGE = "Account not found";
 
     private final AccountRepository accountRepository;
     private final CustomerService customerService;
@@ -75,7 +80,12 @@ public class AccountService {
 
     private Account findAccountById(Long id) {
         return accountRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found with id: " + id));
+                .orElseThrow(() -> {
+                    log.info("Account lookup failed: no account with id={}", id);
+                    // Workshop 2 remediation (SAST §3.6.3): the identifier is no longer
+                    // echoed back to the client to avoid facilitating account ID enumeration.
+                    return new ResourceNotFoundException(ACCOUNT_NOT_FOUND_MESSAGE);
+                });
     }
 
     @Transactional

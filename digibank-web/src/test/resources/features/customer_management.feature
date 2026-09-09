@@ -20,7 +20,7 @@ Feature: Customer Management
       | Bob Smith   | alice@test.com    | +237600000004  | CNI000004  |
     Then the customer creation should fail
     And the response should contain status code 400
-    And the error message should contain "email"
+    And the error message should contain "already exists"
 
   Scenario: Reject customer with duplicate phone number
     Given the banking system is running
@@ -30,4 +30,4 @@ Feature: Customer Management
       | Charlie Brown | charlie@test.com  | +237600000005  | CNI000005  |
     Then the customer creation should fail
     And the response should contain status code 400
-    And the error message should contain "phone"
+    And the error message should contain "already exists"

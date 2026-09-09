@@ -10,10 +10,14 @@ import com.m2ibank.transfer.repository.TransferRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TransferService {
+
+    private static final int MAX_DESCRIPTION_LENGTH = 255;
 
     private final TransferRepository transferRepository;
     private final AccountService accountService;
@@ -25,21 +29,42 @@ public class TransferService {
 
     @Transactional
     public TransferResponse createTransfer(TransferRequest request) {
+        Objects.requireNonNull(request, "request must not be null");
+
+        // Workshop 2 remediation (SAST §3.7.1/§4.5): the transfer service is one of
+        // DigiBank's most business-critical paths, so it must not blindly trust that the
+        // DTO validation layer (@NotNull/@DecimalMin/@Size) was actually enforced upstream
+        // (e.g. if this method is ever called directly, from a test, or from a future
+        // internal caller). Every precondition is therefore re-checked defensively here.
+        if (request.getSourceAccountId() == null || request.getDestinationAccountId() == null) {
+            throw new BusinessException("Source and destination accounts are required");
+        }
+
         if (request.getSourceAccountId().equals(request.getDestinationAccountId())) {
             throw new BusinessException("Source and destination accounts must be different");
+        }
+
+        BigDecimal amount = request.getAmount();
+        if (amount == null || amount.signum() <= 0) {
+            throw new BusinessException("Transfer amount must be greater than zero");
+        }
+
+        String description = request.getDescription() == null ? "" : request.getDescription().trim();
+        if (description.length() > MAX_DESCRIPTION_LENGTH) {
+            throw new BusinessException("Transfer description is too long");
         }
 
         Account sourceAccount = accountService.getAccountEntityById(request.getSourceAccountId());
         Account destinationAccount = accountService.getAccountEntityById(request.getDestinationAccountId());
 
-        accountService.debitAccount(sourceAccount, request.getAmount());
-        accountService.creditAccount(destinationAccount, request.getAmount());
+        accountService.debitAccount(sourceAccount, amount);
+        accountService.creditAccount(destinationAccount, amount);
 
         Transfer transfer = new Transfer(
                 request.getSourceAccountId(),
                 request.getDestinationAccountId(),
-                request.getAmount(),
-                request.getDescription()
+                amount,
+                description
         );
 
         Transfer saved = transferRepository.save(transfer);
