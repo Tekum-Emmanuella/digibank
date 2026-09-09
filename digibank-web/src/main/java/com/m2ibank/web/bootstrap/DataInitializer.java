@@ -9,6 +9,7 @@ import com.m2ibank.customer.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -16,9 +17,12 @@ import java.math.BigDecimal;
 /**
  * Seeds demonstration customers and accounts for local/educational use (Workshop §4.6).
  * Idempotent by demo email: Alice/Brian are created only when those emails are missing.
- * Runs on every profile; intentional for DigiBank labs, not a production-hardening pattern.
+ * Disabled by default: Flyway's V2__insert_seed_data.sql now owns demo data seeding
+ * (Workshop 1, §7.9). Enable with digibank.demo-data.enabled=true for ad hoc local
+ * demonstrations that fall outside the Flyway-managed dataset.
  */
 @Component
+@ConditionalOnProperty(name = "digibank.demo-data.enabled", havingValue = "true")
 public class DataInitializer implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
