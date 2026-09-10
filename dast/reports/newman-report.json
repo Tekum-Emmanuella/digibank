@@ -1,16 +1,16 @@
 {
   "collection": {
     "_": {
-      "postman_id": "digibank-dast-suite-v1"
+      "postman_id": "digibank-dast-collection-v1"
     },
     "item": [
       {
-        "id": "930ee2d0-317d-4232-9810-360d8de75462",
+        "id": "8931b125-36f7-4610-90d8-aa24ef62ad08",
         "name": "01 - Discovery",
         "item": [
           {
-            "id": "13e2e21f-3ca4-45af-b415-2281b1584fea",
-            "name": "Check Swagger UI Availability",
+            "id": "5b826f79-2152-49d4-9807-1c804b97b520",
+            "name": "Check Swagger UI Exposure",
             "request": {
               "url": {
                 "path": [
@@ -29,14 +29,14 @@
               {
                 "listen": "test",
                 "script": {
-                  "id": "c9d3deb5-c788-411e-acad-83f468a54e02",
+                  "id": "47497760-5b93-4657-886f-f027b3b8e63d",
                   "type": "text/javascript",
                   "exec": [
-                    "pm.test(\"Swagger UI is available or redirected\", function () {",
+                    "pm.test(\"Swagger UI returns 200 or 302 redirect\", function () {",
                     "    pm.expect(pm.response.code).to.be.oneOf([200, 302]);",
                     "});"
                   ],
-                  "_lastExecutionId": "13543918-1101-4881-bc2f-e60e3277a082"
+                  "_lastExecutionId": "cfa58464-60c5-4249-a890-effaf392bf82"
                 }
               }
             ]
@@ -45,12 +45,12 @@
         "event": []
       },
       {
-        "id": "f7baeffc-9f39-4418-ad53-016bcd865396",
+        "id": "d94daa54-4f0f-418e-9d68-119f1d0eb768",
         "name": "02 - Nominal Scenarios",
         "item": [
           {
-            "id": "3d952418-ce29-4db8-ae29-07816d50fece",
-            "name": "List All Customers",
+            "id": "9fc8b0c8-735e-45d7-bd84-0779a1b66a43",
+            "name": "List Customers",
             "request": {
               "url": {
                 "path": [
@@ -70,20 +70,20 @@
               {
                 "listen": "test",
                 "script": {
-                  "id": "1f8f814c-b92c-4552-8a87-c802af14dd2b",
+                  "id": "1d538f9b-3d1c-4280-bd18-ba6521b7e704",
                   "type": "text/javascript",
                   "exec": [
-                    "pm.test(\"Status code is 200\", function () {",
+                    "pm.test(\"Status is 200 OK\", function () {",
                     "    pm.response.to.have.status(200);",
                     "});"
                   ],
-                  "_lastExecutionId": "c40ce85e-5cfb-4de6-ab4d-5132db386609"
+                  "_lastExecutionId": "c4c95780-06b0-43bf-a7aa-ac3c25e78148"
                 }
               }
             ]
           },
           {
-            "id": "9a364526-d6de-40a5-b148-76c5c41f449d",
+            "id": "c21a3d75-0993-4ac5-b792-28f44ddc80be",
             "name": "Create Valid Customer",
             "request": {
               "url": {
@@ -106,7 +106,7 @@
               "method": "POST",
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"fullName\": \"DAST Test User\",\n  \"email\": \"{{dynamicEmail}}\",\n  \"phoneNumber\": \"{{dynamicPhone}}\",\n  \"nationalId\": \"{{dynamicNID}}\"\n}"
+                "raw": "{\n  \"fullName\": \"Dynamic DAST User\",\n  \"email\": \"{{dynamicEmail}}\",\n  \"phoneNumber\": \"{{dynamicPhone}}\",\n  \"nationalId\": \"{{dynamicNID}}\"\n}"
               }
             },
             "response": [],
@@ -114,34 +114,34 @@
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "76f7279f-1414-4924-88f9-3587afc5ffb1",
+                  "id": "8bf33ffe-acde-455a-b80c-71bc6ca6ff08",
                   "type": "text/javascript",
                   "exec": [
-                    "var randomSuffix = Math.floor(100000 + Math.random() * 900000);",
-                    "pm.environment.set(\"dynamicEmail\", \"dast.\" + randomSuffix + \"@m2ibank.com\");",
-                    "pm.environment.set(\"dynamicPhone\", \"+237699\" + randomSuffix);",
-                    "pm.environment.set(\"dynamicNID\", \"CNI\" + randomSuffix);"
+                    "var rand = Math.floor(100000 + Math.random() * 900000);",
+                    "pm.environment.set(\"dynamicEmail\", \"user.\" + rand + \"@m2ibank.com\");",
+                    "pm.environment.set(\"dynamicPhone\", \"+237699\" + rand);",
+                    "pm.environment.set(\"dynamicNID\", \"CNI\" + rand);"
                   ],
-                  "_lastExecutionId": "348fdfc8-facd-49b9-adb6-82b3976e8abe"
+                  "_lastExecutionId": "0d7abd81-aa9b-4c15-8037-e317c2198af0"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "d034c9a5-af57-4077-8f9c-0c003f351996",
+                  "id": "f3621b13-f89a-4472-a770-4c6eb4f19d56",
                   "type": "text/javascript",
                   "exec": [
-                    "pm.test(\"Status code is 201\", function () {",
+                    "pm.test(\"Customer created with 201\", function () {",
                     "    pm.response.to.have.status(201);",
                     "});"
                   ],
-                  "_lastExecutionId": "33e3423d-0364-438d-87d7-dc9716d579ac"
+                  "_lastExecutionId": "314d6d01-201f-46f5-95c3-2437b010da1f"
                 }
               }
             ]
           },
           {
-            "id": "01782c1e-545f-44cf-a016-2a9a99e58846",
+            "id": "44400a33-80a3-471e-ae31-520dd46c86a2",
             "name": "Execute Valid Transfer",
             "request": {
               "url": {
@@ -164,7 +164,7 @@
               "method": "POST",
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 100.00,\n  \"description\": \"Valid DAST transfer\"\n}"
+                "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 250.00,\n  \"description\": \"Valid DAST verification transfer\"\n}"
               }
             },
             "response": [],
@@ -172,14 +172,14 @@
               {
                 "listen": "test",
                 "script": {
-                  "id": "f696cc7a-15bf-49da-bf34-6c9670aca9c5",
+                  "id": "e89c986e-f369-41fb-8867-339a0cb31aac",
                   "type": "text/javascript",
                   "exec": [
-                    "pm.test(\"Status code is 201\", function () {",
+                    "pm.test(\"Transfer executed with 201\", function () {",
                     "    pm.response.to.have.status(201);",
                     "});"
                   ],
-                  "_lastExecutionId": "4a104379-37ea-46eb-b141-bc107e8b1ff2"
+                  "_lastExecutionId": "98053abd-feb6-4685-9d11-6f66e94f7525"
                 }
               }
             ]
@@ -188,12 +188,12 @@
         "event": []
       },
       {
-        "id": "563bffff-ed2f-44e3-bcbd-51bb3e33c259",
-        "name": "03 - Negative & Security Tests",
+        "id": "f0ec3b5b-f3dd-4afd-8776-25f1c58024d5",
+        "name": "03 - Negative & Security Scenarios",
         "item": [
           {
-            "id": "f524e5fc-19ab-4406-b707-dc28f86a9436",
-            "name": "Reject Invalid Phone and National ID Format",
+            "id": "4179eafe-5d37-4f28-aae1-af8603a5707d",
+            "name": "Reject Malformed Phone and National ID",
             "request": {
               "url": {
                 "path": [
@@ -215,7 +215,7 @@
               "method": "POST",
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"fullName\": \"Bad Input\",\n  \"email\": \"bad-email-format\",\n  \"phoneNumber\": \"invalid_phone_123\",\n  \"nationalId\": \"??bad-id??\"\n}"
+                "raw": "{\n  \"fullName\": \"Bad\",\n  \"email\": \"invalid-email\",\n  \"phoneNumber\": \"abc\",\n  \"nationalId\": \"!@#\"\n}"
               }
             },
             "response": [],
@@ -223,10 +223,10 @@
               {
                 "listen": "test",
                 "script": {
-                  "id": "9b6b5a44-dab6-461b-99d6-acfe2deb6d4d",
+                  "id": "902a447c-505f-4080-a8c6-a583f2d9ca93",
                   "type": "text/javascript",
                   "exec": [
-                    "pm.test(\"Rejected with HTTP 400\", function () {",
+                    "pm.test(\"Rejected with 400 Bad Request\", function () {",
                     "    pm.response.to.have.status(400);",
                     "});",
                     "pm.test(\"No technical stacktrace exposed\", function () {",
@@ -235,14 +235,14 @@
                     "    pm.expect(text).to.not.include(\"exception\");",
                     "});"
                   ],
-                  "_lastExecutionId": "4dadac0d-deda-40be-b103-d2ca01072c00"
+                  "_lastExecutionId": "3c021bfa-c909-42f7-8e99-9ec247cc1df7"
                 }
               }
             ]
           },
           {
-            "id": "fb5eb0ea-ec7b-48db-aba8-dd5041570cd2",
-            "name": "Reject Non-Existent Customer Lookup",
+            "id": "b717bc85-804a-4ec4-9c47-448e2f5622fb",
+            "name": "Reject Non-Existent Customer ID",
             "request": {
               "url": {
                 "path": [
@@ -263,21 +263,21 @@
               {
                 "listen": "test",
                 "script": {
-                  "id": "c1e787c5-2016-4a55-b3f4-5380e19105e7",
+                  "id": "118b6c8f-3d27-467b-91db-437741a2801d",
                   "type": "text/javascript",
                   "exec": [
-                    "pm.test(\"Returns HTTP 404\", function () {",
+                    "pm.test(\"Returns 404 Not Found\", function () {",
                     "    pm.response.to.have.status(404);",
                     "});"
                   ],
-                  "_lastExecutionId": "16ce2d9e-d7e0-4ee6-a940-6371955bdfc2"
+                  "_lastExecutionId": "e584c4b6-bd2a-44d2-89bf-7e0de56b15d2"
                 }
               }
             ]
           },
           {
-            "id": "c50694c2-cee7-4bfe-bba0-ded8f0099b23",
-            "name": "Reject Transfer to Same Account",
+            "id": "a4d4b0c4-359d-4d6b-a6f7-8e0962570100",
+            "name": "Reject Self-Transfer",
             "request": {
               "url": {
                 "path": [
@@ -299,7 +299,7 @@
               "method": "POST",
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 1,\n  \"amount\": 500.00,\n  \"description\": \"Self transfer attempt\"\n}"
+                "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 1,\n  \"amount\": 500.00,\n  \"description\": \"Same account transfer\"\n}"
               }
             },
             "response": [],
@@ -307,21 +307,21 @@
               {
                 "listen": "test",
                 "script": {
-                  "id": "1be84139-745e-456f-a8c1-b2abc00d2bd7",
+                  "id": "8080dde1-7ced-4b88-a2a1-886d14049c38",
                   "type": "text/javascript",
                   "exec": [
-                    "pm.test(\"Rejected with HTTP 400\", function () {",
+                    "pm.test(\"Rejected with 400 Bad Request\", function () {",
                     "    pm.response.to.have.status(400);",
                     "});"
                   ],
-                  "_lastExecutionId": "8e07b551-ef26-467a-9128-38b54de470e1"
+                  "_lastExecutionId": "5a5f9397-3da6-4886-bb6a-07c442749a1d"
                 }
               }
             ]
           },
           {
-            "id": "1b09f204-176f-4b86-aafd-0df4fb285a5d",
-            "name": "Reject Zero or Negative Amount Transfer",
+            "id": "0a9e75d8-9397-44b7-9199-1615b8be3c8c",
+            "name": "Reject Zero Amount Transfer",
             "request": {
               "url": {
                 "path": [
@@ -343,7 +343,7 @@
               "method": "POST",
               "body": {
                 "mode": "raw",
-                "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 0.00,\n  \"description\": \"Zero amount transfer\"\n}"
+                "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 0.00,\n  \"description\": \"Zero transfer\"\n}"
               }
             },
             "response": [],
@@ -351,14 +351,14 @@
               {
                 "listen": "test",
                 "script": {
-                  "id": "f8038405-4493-4211-a03b-61ab95ca01fb",
+                  "id": "0316bdaf-7f2a-4024-aaf7-010c331a5cdc",
                   "type": "text/javascript",
                   "exec": [
-                    "pm.test(\"Rejected with HTTP 400\", function () {",
+                    "pm.test(\"Rejected with 400 Bad Request\", function () {",
                     "    pm.response.to.have.status(400);",
                     "});"
                   ],
-                  "_lastExecutionId": "772611c3-e7e3-47f0-9ac9-d12e255e961d"
+                  "_lastExecutionId": "0db7986a-cd98-447b-a6d4-b23c35ea63bc"
                 }
               }
             ]
@@ -370,7 +370,7 @@
     "event": [],
     "variable": [],
     "info": {
-      "_postman_id": "digibank-dast-suite-v1",
+      "_postman_id": "digibank-dast-collection-v1",
       "name": "DigiBank DAST Collection",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     }
@@ -386,23 +386,23 @@
       },
       {
         "type": "any",
-        "value": "dast.173344@m2ibank.com",
+        "value": "user.614416@m2ibank.com",
         "key": "dynamicEmail"
       },
       {
         "type": "any",
-        "value": "+237699173344",
+        "value": "+237699614416",
         "key": "dynamicPhone"
       },
       {
         "type": "any",
-        "value": "CNI173344",
+        "value": "CNI614416",
         "key": "dynamicNID"
       }
     ]
   },
   "globals": {
-    "id": "e7fed0c7-9324-4df2-992b-c430eca07668",
+    "id": "06c8ac9e-6484-4636-b9d5-302182e7d30e",
     "values": []
   },
   "run": {
@@ -454,10 +454,10 @@
       }
     },
     "timings": {
-      "responseAverage": 12.125,
-      "responseMin": 6,
-      "responseMax": 26,
-      "responseSd": 7.23597781920315,
+      "responseAverage": 25,
+      "responseMin": 7,
+      "responseMax": 87,
+      "responseSd": 26.641133609514444,
       "dnsAverage": 0,
       "dnsMin": 0,
       "dnsMax": 0,
@@ -466,8 +466,8 @@
       "firstByteMin": 0,
       "firstByteMax": 0,
       "firstByteSd": 0,
-      "started": 1789033939101,
-      "completed": 1789033939364
+      "started": 1789059633605,
+      "completed": 1789059633985
     },
     "executions": [
       {
@@ -480,12 +480,12 @@
           "eof": false,
           "bof": true,
           "cr": false,
-          "ref": "51e12af9-d95a-4d05-b888-677b75eaeb28",
-          "httpRequestId": "b1ada4eb-4c07-4741-a569-322901dcab69"
+          "ref": "476bdc2f-a3e7-4377-b23a-5e4c3fbab00d",
+          "httpRequestId": "2d746a6a-876f-4d0a-961d-8886b4e13bf5"
         },
         "item": {
-          "id": "13e2e21f-3ca4-45af-b415-2281b1584fea",
-          "name": "Check Swagger UI Availability",
+          "id": "5b826f79-2152-49d4-9807-1c804b97b520",
+          "name": "Check Swagger UI Exposure",
           "request": {
             "url": {
               "path": [
@@ -504,14 +504,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "c9d3deb5-c788-411e-acad-83f468a54e02",
+                "id": "47497760-5b93-4657-886f-f027b3b8e63d",
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Swagger UI is available or redirected\", function () {",
+                  "pm.test(\"Swagger UI returns 200 or 302 redirect\", function () {",
                   "    pm.expect(pm.response.code).to.be.oneOf([200, 302]);",
                   "});"
                 ],
-                "_lastExecutionId": "13543918-1101-4881-bc2f-e60e3277a082"
+                "_lastExecutionId": "cfa58464-60c5-4249-a890-effaf392bf82"
               }
             }
           ]
@@ -547,7 +547,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "f1418818-02ce-405a-8c00-d16cf7ebe617",
+              "value": "406bae9d-e076-4568-9586-f98dc6c570d5",
               "system": true
             },
             {
@@ -569,7 +569,7 @@
           "method": "GET"
         },
         "response": {
-          "id": "71283607-fbc2-4357-a8f2-2be004e9cddf",
+          "id": "39659e4e-6f63-4d53-912e-d8a449481f2c",
           "status": "OK",
           "code": 200,
           "header": [
@@ -603,7 +603,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 10 Sep 2026 09:52:19 GMT"
+              "value": "Thu, 10 Sep 2026 17:00:33 GMT"
             },
             {
               "key": "Keep-Alive",
@@ -1354,29 +1354,29 @@
             ]
           },
           "cookie": [],
-          "responseTime": 26,
+          "responseTime": 45,
           "responseSize": 734
         },
-        "id": "13e2e21f-3ca4-45af-b415-2281b1584fea",
+        "id": "5b826f79-2152-49d4-9807-1c804b97b520",
         "assertions": [
           {
-            "assertion": "Swagger UI is available or redirected",
+            "assertion": "Swagger UI returns 200 or 302 redirect",
             "skipped": false
           }
         ]
       },
       {
         "cursor": {
-          "ref": "582dac98-164b-4655-936e-c77c77ddacd6",
+          "ref": "08ab7ce7-02fa-4ad1-b718-618840417c33",
           "length": 8,
           "cycles": 1,
           "position": 1,
           "iteration": 0,
-          "httpRequestId": "032c33b4-595e-49c6-9d19-218cbbfeb9a9"
+          "httpRequestId": "2d45cfac-a9e1-4012-82c0-72ec8213c26c"
         },
         "item": {
-          "id": "3d952418-ce29-4db8-ae29-07816d50fece",
-          "name": "List All Customers",
+          "id": "9fc8b0c8-735e-45d7-bd84-0779a1b66a43",
+          "name": "List Customers",
           "request": {
             "url": {
               "path": [
@@ -1396,14 +1396,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "1f8f814c-b92c-4552-8a87-c802af14dd2b",
+                "id": "1d538f9b-3d1c-4280-bd18-ba6521b7e704",
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
+                  "pm.test(\"Status is 200 OK\", function () {",
                   "    pm.response.to.have.status(200);",
                   "});"
                 ],
-                "_lastExecutionId": "c40ce85e-5cfb-4de6-ab4d-5132db386609"
+                "_lastExecutionId": "c4c95780-06b0-43bf-a7aa-ac3c25e78148"
               }
             }
           ]
@@ -1440,7 +1440,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "b0c4a291-9b23-4938-9d28-735fd0f42abb",
+              "value": "ebd558ab-5737-478d-9bb6-51693bb5a3cd",
               "system": true
             },
             {
@@ -1462,7 +1462,7 @@
           "method": "GET"
         },
         "response": {
-          "id": "238f7015-c2e9-43e0-8d1a-1b8d52d645ca",
+          "id": "6cf98e04-8c1f-4595-bf94-d8e30b6411a5",
           "status": "OK",
           "code": 200,
           "header": [
@@ -1476,7 +1476,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 10 Sep 2026 09:52:19 GMT"
+              "value": "Thu, 10 Sep 2026 17:00:33 GMT"
             },
             {
               "key": "Keep-Alive",
@@ -1674,20 +1674,20 @@
               48,
               84,
               49,
-              49,
-              58,
-              51,
-              50,
+              56,
               58,
               53,
-              51,
+              57,
+              58,
+              48,
+              49,
               46,
               55,
-              50,
-              51,
-              55,
-              55,
-              50,
+              53,
+              57,
+              52,
+              48,
+              49,
               34,
               125,
               44,
@@ -1809,20 +1809,20 @@
               48,
               84,
               49,
-              49,
-              58,
-              51,
-              50,
+              56,
               58,
               53,
-              51,
+              57,
+              58,
+              48,
+              49,
               46,
               55,
-              50,
-              51,
-              55,
-              55,
-              50,
+              53,
+              57,
+              52,
+              48,
+              49,
               34,
               125,
               44,
@@ -1949,160 +1949,20 @@
               48,
               84,
               49,
-              49,
-              58,
-              51,
-              50,
+              56,
               58,
               53,
-              51,
+              57,
+              58,
+              48,
+              49,
               46,
               55,
-              50,
-              51,
-              55,
-              55,
-              50,
-              34,
-              125,
-              44,
-              123,
-              34,
-              105,
-              100,
-              34,
-              58,
-              52,
-              44,
-              34,
-              102,
-              117,
-              108,
-              108,
-              78,
-              97,
-              109,
-              101,
-              34,
-              58,
-              34,
-              68,
-              65,
-              83,
-              84,
-              32,
-              84,
-              101,
-              115,
-              116,
-              32,
-              85,
-              115,
-              101,
-              114,
-              34,
-              44,
-              34,
-              101,
-              109,
-              97,
-              105,
-              108,
-              34,
-              58,
-              34,
-              100,
-              97,
-              115,
-              116,
-              46,
-              116,
-              101,
-              115,
-              116,
-              64,
-              109,
-              50,
-              105,
-              98,
-              97,
-              110,
-              107,
-              46,
-              99,
-              111,
-              109,
-              34,
-              44,
-              34,
-              112,
-              104,
-              111,
-              110,
-              101,
-              78,
-              117,
-              109,
-              98,
-              101,
-              114,
-              34,
-              58,
-              34,
-              43,
-              50,
-              51,
-              55,
-              54,
-              57,
-              57,
-              57,
-              57,
-              48,
-              48,
-              48,
-              49,
-              34,
-              44,
-              34,
-              99,
-              114,
-              101,
-              97,
-              116,
-              101,
-              100,
-              65,
-              116,
-              34,
-              58,
-              34,
-              50,
-              48,
-              50,
-              54,
-              45,
-              48,
-              57,
-              45,
-              49,
-              48,
-              84,
-              49,
-              48,
-              58,
-              52,
-              55,
-              58,
-              49,
-              52,
-              46,
-              55,
-              50,
-              57,
-              51,
-              49,
               53,
+              57,
+              52,
+              48,
+              49,
               34,
               125,
               93,
@@ -2132,50 +1992,50 @@
               48,
               84,
               49,
-              48,
-              58,
-              53,
-              50,
-              58,
-              49,
-              57,
-              46,
-              49,
-              55,
-              57,
-              52,
-              54,
-              48,
               56,
+              58,
               48,
+              48,
+              58,
+              51,
+              51,
+              46,
+              55,
+              49,
+              56,
               54,
+              50,
+              54,
+              56,
+              56,
+              52,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 8,
-          "responseSize": 661
+          "responseTime": 12,
+          "responseSize": 521
         },
-        "id": "3d952418-ce29-4db8-ae29-07816d50fece",
+        "id": "9fc8b0c8-735e-45d7-bd84-0779a1b66a43",
         "assertions": [
           {
-            "assertion": "Status code is 200",
+            "assertion": "Status is 200 OK",
             "skipped": false
           }
         ]
       },
       {
         "cursor": {
-          "ref": "e46d58a8-e3d4-4fa8-b4fd-6a65a12562d6",
+          "ref": "87e885c3-2e8c-4c37-be89-a833c9039602",
           "length": 8,
           "cycles": 1,
           "position": 2,
           "iteration": 0,
-          "httpRequestId": "703a4e63-7a71-42cd-b8b4-c0ee731f0b27"
+          "httpRequestId": "bd577a59-d63e-425c-8eef-c938491b4873"
         },
         "item": {
-          "id": "9a364526-d6de-40a5-b148-76c5c41f449d",
+          "id": "c21a3d75-0993-4ac5-b792-28f44ddc80be",
           "name": "Create Valid Customer",
           "request": {
             "url": {
@@ -2198,7 +2058,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"DAST Test User\",\n  \"email\": \"{{dynamicEmail}}\",\n  \"phoneNumber\": \"{{dynamicPhone}}\",\n  \"nationalId\": \"{{dynamicNID}}\"\n}"
+              "raw": "{\n  \"fullName\": \"Dynamic DAST User\",\n  \"email\": \"{{dynamicEmail}}\",\n  \"phoneNumber\": \"{{dynamicPhone}}\",\n  \"nationalId\": \"{{dynamicNID}}\"\n}"
             }
           },
           "response": [],
@@ -2206,28 +2066,28 @@
             {
               "listen": "prerequest",
               "script": {
-                "id": "76f7279f-1414-4924-88f9-3587afc5ffb1",
+                "id": "8bf33ffe-acde-455a-b80c-71bc6ca6ff08",
                 "type": "text/javascript",
                 "exec": [
-                  "var randomSuffix = Math.floor(100000 + Math.random() * 900000);",
-                  "pm.environment.set(\"dynamicEmail\", \"dast.\" + randomSuffix + \"@m2ibank.com\");",
-                  "pm.environment.set(\"dynamicPhone\", \"+237699\" + randomSuffix);",
-                  "pm.environment.set(\"dynamicNID\", \"CNI\" + randomSuffix);"
+                  "var rand = Math.floor(100000 + Math.random() * 900000);",
+                  "pm.environment.set(\"dynamicEmail\", \"user.\" + rand + \"@m2ibank.com\");",
+                  "pm.environment.set(\"dynamicPhone\", \"+237699\" + rand);",
+                  "pm.environment.set(\"dynamicNID\", \"CNI\" + rand);"
                 ],
-                "_lastExecutionId": "348fdfc8-facd-49b9-adb6-82b3976e8abe"
+                "_lastExecutionId": "0d7abd81-aa9b-4c15-8037-e317c2198af0"
               }
             },
             {
               "listen": "test",
               "script": {
-                "id": "d034c9a5-af57-4077-8f9c-0c003f351996",
+                "id": "f3621b13-f89a-4472-a770-4c6eb4f19d56",
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status code is 201\", function () {",
+                  "pm.test(\"Customer created with 201\", function () {",
                   "    pm.response.to.have.status(201);",
                   "});"
                 ],
-                "_lastExecutionId": "33e3423d-0364-438d-87d7-dc9716d579ac"
+                "_lastExecutionId": "314d6d01-201f-46f5-95c3-2437b010da1f"
               }
             }
           ]
@@ -2268,7 +2128,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "64bf1239-e34f-40bd-b0d9-6d126748cc85",
+              "value": "0bb4dc3b-664e-4944-9f82-52e97d63c8d9",
               "system": true
             },
             {
@@ -2288,18 +2148,18 @@
             },
             {
               "key": "Content-Length",
-              "value": "135",
+              "value": "138",
               "system": true
             }
           ],
           "method": "POST",
           "body": {
             "mode": "raw",
-            "raw": "{\n  \"fullName\": \"DAST Test User\",\n  \"email\": \"dast.173344@m2ibank.com\",\n  \"phoneNumber\": \"+237699173344\",\n  \"nationalId\": \"CNI173344\"\n}"
+            "raw": "{\n  \"fullName\": \"Dynamic DAST User\",\n  \"email\": \"user.614416@m2ibank.com\",\n  \"phoneNumber\": \"+237699614416\",\n  \"nationalId\": \"CNI614416\"\n}"
           }
         },
         "response": {
-          "id": "f668e875-4009-464c-87b5-9389fb1b9880",
+          "id": "e4e4b260-a865-4828-ac3d-b45c26fadf6e",
           "status": "Created",
           "code": 201,
           "header": [
@@ -2313,7 +2173,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 10 Sep 2026 09:52:19 GMT"
+              "value": "Thu, 10 Sep 2026 17:00:33 GMT"
             },
             {
               "key": "Keep-Alive",
@@ -2398,7 +2258,7 @@
               100,
               34,
               58,
-              53,
+              52,
               44,
               34,
               102,
@@ -2413,14 +2273,17 @@
               58,
               34,
               68,
+              121,
+              110,
+              97,
+              109,
+              105,
+              99,
+              32,
+              68,
               65,
               83,
               84,
-              32,
-              84,
-              101,
-              115,
-              116,
               32,
               85,
               115,
@@ -2437,17 +2300,17 @@
               34,
               58,
               34,
-              100,
-              97,
+              117,
               115,
-              116,
+              101,
+              114,
               46,
+              54,
               49,
-              55,
-              51,
-              51,
               52,
               52,
+              49,
+              54,
               64,
               109,
               50,
@@ -2484,12 +2347,12 @@
               54,
               57,
               57,
+              54,
               49,
-              55,
-              51,
-              51,
               52,
               52,
+              49,
+              54,
               34,
               44,
               34,
@@ -2517,23 +2380,23 @@
               48,
               84,
               49,
+              56,
+              58,
+              48,
               48,
               58,
-              53,
-              50,
-              58,
-              49,
-              57,
+              51,
+              51,
               46,
-              50,
-              49,
-              50,
-              52,
-              57,
-              55,
-              49,
+              56,
               48,
               49,
+              50,
+              55,
+              55,
+              51,
+              53,
+              55,
               34,
               125,
               44,
@@ -2562,50 +2425,50 @@
               48,
               84,
               49,
+              56,
+              58,
+              48,
               48,
               58,
-              53,
-              50,
-              58,
-              49,
-              57,
-              46,
-              50,
-              50,
               51,
-              54,
-              49,
+              51,
+              46,
+              56,
+              51,
               48,
+              57,
               51,
               52,
-              51,
+              55,
+              50,
+              56,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 22,
-          "responseSize": 254
+          "responseTime": 87,
+          "responseSize": 257
         },
-        "id": "9a364526-d6de-40a5-b148-76c5c41f449d",
+        "id": "c21a3d75-0993-4ac5-b792-28f44ddc80be",
         "assertions": [
           {
-            "assertion": "Status code is 201",
+            "assertion": "Customer created with 201",
             "skipped": false
           }
         ]
       },
       {
         "cursor": {
-          "ref": "b7cadd77-9947-4413-8d58-186fb0dc4cd3",
+          "ref": "766b0a56-524d-4b2a-9f86-f06d96a764d8",
           "length": 8,
           "cycles": 1,
           "position": 3,
           "iteration": 0,
-          "httpRequestId": "ee93f96d-f804-42ab-a9fd-a6927f636474"
+          "httpRequestId": "c88b5285-7255-4711-bf7d-a0690ba4fcc7"
         },
         "item": {
-          "id": "01782c1e-545f-44cf-a016-2a9a99e58846",
+          "id": "44400a33-80a3-471e-ae31-520dd46c86a2",
           "name": "Execute Valid Transfer",
           "request": {
             "url": {
@@ -2628,7 +2491,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 100.00,\n  \"description\": \"Valid DAST transfer\"\n}"
+              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 250.00,\n  \"description\": \"Valid DAST verification transfer\"\n}"
             }
           },
           "response": [],
@@ -2636,14 +2499,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "f696cc7a-15bf-49da-bf34-6c9670aca9c5",
+                "id": "e89c986e-f369-41fb-8867-339a0cb31aac",
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status code is 201\", function () {",
+                  "pm.test(\"Transfer executed with 201\", function () {",
                   "    pm.response.to.have.status(201);",
                   "});"
                 ],
-                "_lastExecutionId": "4a104379-37ea-46eb-b141-bc107e8b1ff2"
+                "_lastExecutionId": "98053abd-feb6-4685-9d11-6f66e94f7525"
               }
             }
           ]
@@ -2684,7 +2547,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "622d9811-a80e-4762-8542-24fdd0c2c834",
+              "value": "07011372-0713-4fad-96ff-6acda6c42809",
               "system": true
             },
             {
@@ -2704,18 +2567,18 @@
             },
             {
               "key": "Content-Length",
-              "value": "115",
+              "value": "128",
               "system": true
             }
           ],
           "method": "POST",
           "body": {
             "mode": "raw",
-            "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 100.00,\n  \"description\": \"Valid DAST transfer\"\n}"
+            "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 250.00,\n  \"description\": \"Valid DAST verification transfer\"\n}"
           }
         },
         "response": {
-          "id": "76e34c86-e50b-43f5-bfd6-3f4a793325ac",
+          "id": "4c7fada8-7585-4755-b579-5299116e68bc",
           "status": "Created",
           "code": 201,
           "header": [
@@ -2729,7 +2592,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 10 Sep 2026 09:52:19 GMT"
+              "value": "Thu, 10 Sep 2026 17:00:33 GMT"
             },
             {
               "key": "Keep-Alive",
@@ -2815,7 +2678,7 @@
               100,
               34,
               58,
-              55,
+              51,
               44,
               34,
               115,
@@ -2871,8 +2734,8 @@
               116,
               34,
               58,
-              49,
-              48,
+              50,
+              53,
               48,
               46,
               48,
@@ -2903,6 +2766,19 @@
               65,
               83,
               84,
+              32,
+              118,
+              101,
+              114,
+              105,
+              102,
+              105,
+              99,
+              97,
+              116,
+              105,
+              111,
+              110,
               32,
               116,
               114,
@@ -2939,23 +2815,23 @@
               48,
               84,
               49,
-              48,
-              58,
-              53,
-              50,
-              58,
-              49,
-              57,
-              46,
-              50,
-              52,
-              57,
-              48,
               56,
-              55,
-              55,
+              58,
+              48,
+              48,
+              58,
+              51,
+              51,
+              46,
+              56,
               53,
+              57,
+              55,
+              50,
               49,
+              52,
+              51,
+              56,
               34,
               125,
               44,
@@ -2984,51 +2860,51 @@
               48,
               84,
               49,
+              56,
+              58,
+              48,
               48,
               58,
-              53,
-              50,
-              58,
-              49,
-              57,
+              51,
+              51,
               46,
-              50,
-              53,
-              51,
-              51,
-              48,
+              56,
               55,
-              57,
+              50,
+              49,
               54,
-              57,
+              49,
+              50,
+              55,
+              51,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 13,
-          "responseSize": 260
+          "responseTime": 27,
+          "responseSize": 273
         },
-        "id": "01782c1e-545f-44cf-a016-2a9a99e58846",
+        "id": "44400a33-80a3-471e-ae31-520dd46c86a2",
         "assertions": [
           {
-            "assertion": "Status code is 201",
+            "assertion": "Transfer executed with 201",
             "skipped": false
           }
         ]
       },
       {
         "cursor": {
-          "ref": "89bceff5-aebb-48e3-b829-75ea93ccc3c4",
+          "ref": "a55d9cfd-9109-4af1-b675-d9c2b46d1070",
           "length": 8,
           "cycles": 1,
           "position": 4,
           "iteration": 0,
-          "httpRequestId": "511d3701-3cc9-45c8-bbc7-6f22c425bad8"
+          "httpRequestId": "6e04672a-a1cd-4d04-8d61-f79020162fa3"
         },
         "item": {
-          "id": "f524e5fc-19ab-4406-b707-dc28f86a9436",
-          "name": "Reject Invalid Phone and National ID Format",
+          "id": "4179eafe-5d37-4f28-aae1-af8603a5707d",
+          "name": "Reject Malformed Phone and National ID",
           "request": {
             "url": {
               "path": [
@@ -3050,7 +2926,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Bad Input\",\n  \"email\": \"bad-email-format\",\n  \"phoneNumber\": \"invalid_phone_123\",\n  \"nationalId\": \"??bad-id??\"\n}"
+              "raw": "{\n  \"fullName\": \"Bad\",\n  \"email\": \"invalid-email\",\n  \"phoneNumber\": \"abc\",\n  \"nationalId\": \"!@#\"\n}"
             }
           },
           "response": [],
@@ -3058,10 +2934,10 @@
             {
               "listen": "test",
               "script": {
-                "id": "9b6b5a44-dab6-461b-99d6-acfe2deb6d4d",
+                "id": "902a447c-505f-4080-a8c6-a583f2d9ca93",
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Rejected with HTTP 400\", function () {",
+                  "pm.test(\"Rejected with 400 Bad Request\", function () {",
                   "    pm.response.to.have.status(400);",
                   "});",
                   "pm.test(\"No technical stacktrace exposed\", function () {",
@@ -3070,7 +2946,7 @@
                   "    pm.expect(text).to.not.include(\"exception\");",
                   "});"
                 ],
-                "_lastExecutionId": "4dadac0d-deda-40be-b103-d2ca01072c00"
+                "_lastExecutionId": "3c021bfa-c909-42f7-8e99-9ec247cc1df7"
               }
             }
           ]
@@ -3111,7 +2987,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "65c3770a-4b2c-4f7d-9911-8615e211bd40",
+              "value": "8c9e049c-5e2c-47dd-bb34-9b86771cf8ed",
               "system": true
             },
             {
@@ -3131,18 +3007,18 @@
             },
             {
               "key": "Content-Length",
-              "value": "128",
+              "value": "98",
               "system": true
             }
           ],
           "method": "POST",
           "body": {
             "mode": "raw",
-            "raw": "{\n  \"fullName\": \"Bad Input\",\n  \"email\": \"bad-email-format\",\n  \"phoneNumber\": \"invalid_phone_123\",\n  \"nationalId\": \"??bad-id??\"\n}"
+            "raw": "{\n  \"fullName\": \"Bad\",\n  \"email\": \"invalid-email\",\n  \"phoneNumber\": \"abc\",\n  \"nationalId\": \"!@#\"\n}"
           }
         },
         "response": {
-          "id": "7a1e41bd-6f18-4bf5-8873-4a328556dc06",
+          "id": "8507b5c0-c319-4df2-931a-fb48da9e00cd",
           "status": "Bad Request",
           "code": 400,
           "header": [
@@ -3156,7 +3032,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 10 Sep 2026 09:52:19 GMT"
+              "value": "Thu, 10 Sep 2026 17:00:33 GMT"
             },
             {
               "key": "Connection",
@@ -3194,31 +3070,18 @@
               34,
               58,
               34,
-              112,
-              104,
-              111,
-              110,
               101,
-              78,
-              117,
               109,
-              98,
-              101,
-              114,
+              97,
+              105,
+              108,
               58,
               32,
-              80,
-              104,
-              111,
-              110,
-              101,
-              32,
-              110,
-              117,
+              69,
               109,
-              98,
-              101,
-              114,
+              97,
+              105,
+              108,
               32,
               102,
               111,
@@ -3276,35 +3139,35 @@
               48,
               84,
               49,
+              56,
+              58,
+              48,
               48,
               58,
+              51,
+              51,
+              46,
+              56,
+              57,
               53,
               50,
-              58,
-              49,
-              57,
-              46,
-              50,
               55,
-              57,
+              53,
+              54,
               49,
               52,
-              57,
-              51,
-              55,
-              54,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 6,
-          "responseSize": 129
+          "responseTime": 7,
+          "responseSize": 116
         },
-        "id": "f524e5fc-19ab-4406-b707-dc28f86a9436",
+        "id": "4179eafe-5d37-4f28-aae1-af8603a5707d",
         "assertions": [
           {
-            "assertion": "Rejected with HTTP 400",
+            "assertion": "Rejected with 400 Bad Request",
             "skipped": false
           },
           {
@@ -3315,16 +3178,16 @@
       },
       {
         "cursor": {
-          "ref": "61d9d976-70ac-4e14-9f67-77d67f6fe01c",
+          "ref": "c7f76d2f-801e-4edf-8cdc-e016ad8eab84",
           "length": 8,
           "cycles": 1,
           "position": 5,
           "iteration": 0,
-          "httpRequestId": "c00e1702-f9aa-49d1-b181-f3c2025fbe82"
+          "httpRequestId": "f4788de6-f693-4844-82c8-f425ef52c77d"
         },
         "item": {
-          "id": "fb5eb0ea-ec7b-48db-aba8-dd5041570cd2",
-          "name": "Reject Non-Existent Customer Lookup",
+          "id": "b717bc85-804a-4ec4-9c47-448e2f5622fb",
+          "name": "Reject Non-Existent Customer ID",
           "request": {
             "url": {
               "path": [
@@ -3345,14 +3208,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "c1e787c5-2016-4a55-b3f4-5380e19105e7",
+                "id": "118b6c8f-3d27-467b-91db-437741a2801d",
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Returns HTTP 404\", function () {",
+                  "pm.test(\"Returns 404 Not Found\", function () {",
                   "    pm.response.to.have.status(404);",
                   "});"
                 ],
-                "_lastExecutionId": "16ce2d9e-d7e0-4ee6-a940-6371955bdfc2"
+                "_lastExecutionId": "e584c4b6-bd2a-44d2-89bf-7e0de56b15d2"
               }
             }
           ]
@@ -3390,7 +3253,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "76d8760f-34b2-442c-ba24-45e8e28abb11",
+              "value": "5e3b65a5-aefa-494f-8ddd-853096d9c4cf",
               "system": true
             },
             {
@@ -3412,7 +3275,7 @@
           "method": "GET"
         },
         "response": {
-          "id": "bee1d9a4-5221-4680-b35b-8e7c04418b5f",
+          "id": "3b795034-1a75-4d6c-baca-53f6f096e436",
           "status": "Not Found",
           "code": 404,
           "header": [
@@ -3426,7 +3289,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 10 Sep 2026 09:52:19 GMT"
+              "value": "Thu, 10 Sep 2026 17:00:33 GMT"
             },
             {
               "key": "Keep-Alive",
@@ -3525,50 +3388,51 @@
               48,
               84,
               49,
-              48,
-              58,
-              53,
-              50,
-              58,
-              49,
-              57,
-              46,
-              51,
-              48,
-              49,
               56,
-              57,
+              58,
+              48,
+              48,
+              58,
               51,
-              50,
+              51,
+              46,
               57,
+              50,
+              54,
+              51,
+              51,
+              57,
+              48,
+              55,
+              50,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 7,
-          "responseSize": 103
+          "responseTime": 8,
+          "responseSize": 104
         },
-        "id": "fb5eb0ea-ec7b-48db-aba8-dd5041570cd2",
+        "id": "b717bc85-804a-4ec4-9c47-448e2f5622fb",
         "assertions": [
           {
-            "assertion": "Returns HTTP 404",
+            "assertion": "Returns 404 Not Found",
             "skipped": false
           }
         ]
       },
       {
         "cursor": {
-          "ref": "5189a0c2-5c2e-4a62-a908-f8a7da304d10",
+          "ref": "36015977-45fc-458b-9178-ab3486977e2f",
           "length": 8,
           "cycles": 1,
           "position": 6,
           "iteration": 0,
-          "httpRequestId": "3fcca3ad-8ee2-4632-888d-1a09ae3cb7fa"
+          "httpRequestId": "f7c42a81-4828-499e-9b78-3bfa03d483aa"
         },
         "item": {
-          "id": "c50694c2-cee7-4bfe-bba0-ded8f0099b23",
-          "name": "Reject Transfer to Same Account",
+          "id": "a4d4b0c4-359d-4d6b-a6f7-8e0962570100",
+          "name": "Reject Self-Transfer",
           "request": {
             "url": {
               "path": [
@@ -3590,7 +3454,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 1,\n  \"amount\": 500.00,\n  \"description\": \"Self transfer attempt\"\n}"
+              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 1,\n  \"amount\": 500.00,\n  \"description\": \"Same account transfer\"\n}"
             }
           },
           "response": [],
@@ -3598,14 +3462,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "1be84139-745e-456f-a8c1-b2abc00d2bd7",
+                "id": "8080dde1-7ced-4b88-a2a1-886d14049c38",
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Rejected with HTTP 400\", function () {",
+                  "pm.test(\"Rejected with 400 Bad Request\", function () {",
                   "    pm.response.to.have.status(400);",
                   "});"
                 ],
-                "_lastExecutionId": "8e07b551-ef26-467a-9128-38b54de470e1"
+                "_lastExecutionId": "5a5f9397-3da6-4886-bb6a-07c442749a1d"
               }
             }
           ]
@@ -3646,7 +3510,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "230818e7-4a39-4427-98c6-1b20fca44bdb",
+              "value": "8971a01f-a7a2-4c09-bc8f-b3a8abb9ca7c",
               "system": true
             },
             {
@@ -3673,11 +3537,11 @@
           "method": "POST",
           "body": {
             "mode": "raw",
-            "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 1,\n  \"amount\": 500.00,\n  \"description\": \"Self transfer attempt\"\n}"
+            "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 1,\n  \"amount\": 500.00,\n  \"description\": \"Same account transfer\"\n}"
           }
         },
         "response": {
-          "id": "b1b7e8ac-9d0c-4b54-b082-7a3e29d50483",
+          "id": "506c8027-97a8-44c3-9054-698a16f64041",
           "status": "Bad Request",
           "code": 400,
           "header": [
@@ -3691,7 +3555,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 10 Sep 2026 09:52:19 GMT"
+              "value": "Thu, 10 Sep 2026 17:00:33 GMT"
             },
             {
               "key": "Connection",
@@ -3817,51 +3681,51 @@
               48,
               84,
               49,
+              56,
+              58,
+              48,
               48,
               58,
-              53,
-              50,
-              58,
-              49,
-              57,
+              51,
+              51,
               46,
-              51,
-              50,
+              57,
               52,
-              50,
-              56,
-              51,
+              57,
               49,
               52,
-              53,
+              50,
+              52,
+              52,
+              51,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 6,
+          "responseTime": 7,
           "responseSize": 135
         },
-        "id": "c50694c2-cee7-4bfe-bba0-ded8f0099b23",
+        "id": "a4d4b0c4-359d-4d6b-a6f7-8e0962570100",
         "assertions": [
           {
-            "assertion": "Rejected with HTTP 400",
+            "assertion": "Rejected with 400 Bad Request",
             "skipped": false
           }
         ]
       },
       {
         "cursor": {
-          "ref": "06ea14f5-7f24-4f21-850b-27af1eb6494c",
+          "ref": "6794ed58-236a-405a-9b1b-4d1ab036b71d",
           "length": 8,
           "cycles": 1,
           "position": 7,
           "iteration": 0,
-          "httpRequestId": "e671d7a9-85c6-4ef8-a457-3d567509f4b7"
+          "httpRequestId": "57ca3322-24ae-4590-ade5-cc78788b0452"
         },
         "item": {
-          "id": "1b09f204-176f-4b86-aafd-0df4fb285a5d",
-          "name": "Reject Zero or Negative Amount Transfer",
+          "id": "0a9e75d8-9397-44b7-9199-1615b8be3c8c",
+          "name": "Reject Zero Amount Transfer",
           "request": {
             "url": {
               "path": [
@@ -3883,7 +3747,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 0.00,\n  \"description\": \"Zero amount transfer\"\n}"
+              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 0.00,\n  \"description\": \"Zero transfer\"\n}"
             }
           },
           "response": [],
@@ -3891,14 +3755,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "f8038405-4493-4211-a03b-61ab95ca01fb",
+                "id": "0316bdaf-7f2a-4024-aaf7-010c331a5cdc",
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Rejected with HTTP 400\", function () {",
+                  "pm.test(\"Rejected with 400 Bad Request\", function () {",
                   "    pm.response.to.have.status(400);",
                   "});"
                 ],
-                "_lastExecutionId": "772611c3-e7e3-47f0-9ac9-d12e255e961d"
+                "_lastExecutionId": "0db7986a-cd98-447b-a6d4-b23c35ea63bc"
               }
             }
           ]
@@ -3939,7 +3803,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "8fa820c8-fdb4-4001-ae98-c26e46c6bb44",
+              "value": "3e1d098b-c1bd-4085-ae20-12cd22c5fd8b",
               "system": true
             },
             {
@@ -3959,18 +3823,18 @@
             },
             {
               "key": "Content-Length",
-              "value": "114",
+              "value": "107",
               "system": true
             }
           ],
           "method": "POST",
           "body": {
             "mode": "raw",
-            "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 0.00,\n  \"description\": \"Zero amount transfer\"\n}"
+            "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 0.00,\n  \"description\": \"Zero transfer\"\n}"
           }
         },
         "response": {
-          "id": "d3d0945f-935a-4b17-ae2a-26a6e11c83f2",
+          "id": "e452f710-c55e-4c98-ad85-0ccbbbc848db",
           "status": "Bad Request",
           "code": 400,
           "header": [
@@ -3984,7 +3848,7 @@
             },
             {
               "key": "Date",
-              "value": "Thu, 10 Sep 2026 09:52:19 GMT"
+              "value": "Thu, 10 Sep 2026 17:00:33 GMT"
             },
             {
               "key": "Connection",
@@ -4110,42 +3974,42 @@
               48,
               84,
               49,
+              56,
+              58,
+              48,
               48,
               58,
-              53,
-              50,
-              58,
-              49,
-              57,
+              51,
+              51,
               46,
+              57,
+              55,
+              50,
               51,
               52,
-              56,
               54,
               52,
+              54,
               52,
-              51,
-              57,
-              49,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 9,
+          "responseTime": 7,
           "responseSize": 135
         },
-        "id": "1b09f204-176f-4b86-aafd-0df4fb285a5d",
+        "id": "0a9e75d8-9397-44b7-9199-1615b8be3c8c",
         "assertions": [
           {
-            "assertion": "Rejected with HTTP 400",
+            "assertion": "Rejected with 400 Bad Request",
             "skipped": false
           }
         ]
       }
     ],
     "transfers": {
-      "responseTotal": 2411
+      "responseTotal": 2275
     },
     "failures": [],
     "error": null

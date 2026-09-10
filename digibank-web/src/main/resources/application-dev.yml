@@ -4,8 +4,8 @@ spring:
     # never commit real usernames/passwords into a versioned application-*.yml file.
     # See .env.example for the variables to set locally (SPRING_DATASOURCE_URL/USERNAME/PASSWORD).
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/digibankdb}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    username: ${SPRING_DATASOURCE_USERNAME:digibank}
+    password: ${SPRING_DATASOURCE_PASSWORD:digibank123}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -14,6 +14,7 @@ spring:
     # SQL logging stays disabled by default, even in dev, to avoid leaking query data/parameters.
     # Enable locally and temporarily (e.g. via -Dspring-boot.run.arguments) if you need to debug queries.
     show-sql: false
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true

@@ -1,28 +1,32 @@
-# Workshop 3: Dynamic Security Analysis (DAST) Findings
+# Workshop 3: Dynamic Security Analysis (DAST) Findings Log
 
-## 1. Scope & Execution Target
+## 1. Environment & Target
 - **Target URL**: `http://localhost:8080`
-- **Environment Profile**: `dev`
-- **Testing Tools**: Postman, Newman, cURL, OWASP ZAP
+- **Active Profile**: `dev`
+- **Database**: PostgreSQL 16 (`digibankdb`)
+- **Testing Methods**: cURL, Postman Collection, Newman Runner, OWASP ZAP
 
 ---
 
-## 2. Dynamic Vulnerabilities Identified at Runtime
+## 2. Dynamic Vulnerability Sheets
 
-### Finding 1: Unrestricted OpenAPI & Swagger Documentation Exposure
-- **Endpoint**: `GET /swagger-ui.html`, `GET /swagger-ui/index.html`
-- **Observable Behavior**: Swagger UI is accessible with HTTP 200/302.
-- **Risk / Impact**: Exposes all endpoints, schema structures, and business operations to external observers.
-- **Remediation**: Restrict Swagger and OpenAPI documentation strictly to the `dev` profile; disable globally in `application.yml`.
+### Vulnerability 1: Unrestricted Exposure of Interactive Documentation
+- **Endpoint**: `GET /swagger-ui.html`
+- **Observation**: Swagger UI and OpenAPI documentation are freely reachable without access restriction.
+- **Classification**: Information Exposure / Uncontrolled Attack Surface.
+- **Impact**: Provides external actors with a complete map of exposed endpoints, request schemas, and parameter formats.
+- **Remediation**: Restrict Swagger and OpenAPI documentation exclusively to the `dev` profile; disable globally in `application.yml`.
 
-### Finding 2: Missing Security HTTP Response Headers
-- **Affected Surface**: All HTTP responses across `/api/*`.
-- **Observable Behavior**: Responses lack standard security headers (`X-Content-Type-Options`, `X-Frame-Options`, `Content-Security-Policy`).
-- **Risk / Impact**: Leaves clients vulnerable to MIME-sniffing, clickjacking, or cross-site content injection.
-- **Remediation**: Add standard security response headers in the web filter configuration.
+### Vulnerability 2: Absence of Standard HTTP Security Headers
+- **Endpoint**: All routes (`/api/*`, `/`)
+- **Observation**: HTTP responses lack standard protective headers (`X-Content-Type-Options`, `X-Frame-Options`, `Content-Security-Policy`).
+- **Classification**: Missing Security Headers.
+- **Impact**: Increases vulnerability to MIME-type sniffing, clickjacking, and cross-site framing.
+- **Remediation**: Configure security response headers via an HTTP filter or Spring Security configuration.
 
-### Finding 3: Missing Defensive Precondition Guards in Service Layer
-- **Endpoint**: `POST /api/transfers`
-- **Observable Behavior**: Rejection of same-account or invalid amount transactions must be enforced defensively at the service boundary.
-- **Risk / Impact**: Bypassing DTO validation allows illegal financial operations.
-- **Remediation**: Ensure `TransferService` explicitly validates preconditions and produces standardized, sanitized business error responses.
+### Vulnerability 3: Risk of Overly Descriptive Error Feedback
+- **Endpoint**: `GET /api/customers/{id}`, `POST /api/transfers`
+- **Observation**: Error responses return varying granular messages that can assist attackers in user and account enumeration.
+- **Classification**: Improper Error Handling / Information Disclosure.
+- **Impact**: Allows attackers to differentiate between nonexistent resources and existing business constraints.
+- **Remediation**: Unify and sanitize error envelopes using a standardized `ApiError` format without leaking internal identifiers.
