@@ -64,7 +64,7 @@ jobs:
           docker history digibank:ci --no-trunc > docker-image-history.txt
 
       - name: Run Trivy image scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: digibank:ci
           format: table
@@ -86,4 +86,3 @@ jobs:
             docker-image-history.txt
             trivy-image-report.txt
           if-no-files-found: warn
-
