@@ -1,286 +1,333 @@
 {
-  "info": {
-    "_postman_id": "digibank-dast-collection-v1",
-    "name": "DigiBank DAST Collection",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "01 - Discovery",
-      "item": [
-        {
-          "name": "Check Swagger UI Exposure",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Swagger UI returns 200 or 302 redirect\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 302]);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/swagger-ui.html",
-              "host": ["{{baseUrl}}"],
-              "path": ["swagger-ui.html"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "02 - Nominal Scenarios",
-      "item": [
-        {
-          "name": "List Customers",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Status is 200 OK\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/customers",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "customers"]
-            }
-          }
-        },
-        {
-          "name": "Create Valid Customer",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  "var rand = Math.floor(100000 + Math.random() * 900000);",
-                  "pm.environment.set(\"dynamicEmail\", \"user.\" + rand + \"@m2ibank.com\");",
-                  "pm.environment.set(\"dynamicPhone\", \"+237699\" + rand);",
-                  "pm.environment.set(\"dynamicNID\", \"CNI\" + rand);"
-                ],
-                "type": "text/javascript"
-              }
-            },
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Customer created with 201\", function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Dynamic DAST User\",\n  \"email\": \"{{dynamicEmail}}\",\n  \"phoneNumber\": \"{{dynamicPhone}}\",\n  \"nationalId\": \"{{dynamicNID}}\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/customers",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "customers"]
-            }
-          }
-        },
-        {
-          "name": "Execute Valid Transfer",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Transfer executed with 201\", function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 250.00,\n  \"description\": \"Valid DAST verification transfer\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/transfers",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "transfers"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "03 - Negative & Security Scenarios",
-      "item": [
-        {
-          "name": "Reject Malformed Phone and National ID",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Rejected with 400 Bad Request\", function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});",
-                  "pm.test(\"No technical stacktrace exposed\", function () {",
-                  "    var text = pm.response.text().toLowerCase();",
-                  "    pm.expect(text).to.not.include(\"stacktrace\");",
-                  "    pm.expect(text).to.not.include(\"exception\");",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Bad\",\n  \"email\": \"invalid-email\",\n  \"phoneNumber\": \"abc\",\n  \"nationalId\": \"!@#\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/customers",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "customers"]
-            }
-          }
-        },
-        {
-          "name": "Reject Non-Existent Customer ID",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Returns 404 Not Found\", function () {",
-                  "    pm.response.to.have.status(404);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/customers/999999",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "customers", "999999"]
-            }
-          }
-        },
-        {
-          "name": "Reject Self-Transfer",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Rejected with 400 Bad Request\", function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 1,\n  \"amount\": 500.00,\n  \"description\": \"Same account transfer\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/transfers",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "transfers"]
-            }
-          }
-        },
-        {
-          "name": "Reject Zero Amount Transfer",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Rejected with 400 Bad Request\", function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 0.00,\n  \"description\": \"Zero transfer\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/transfers",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "transfers"]
-            }
-          }
-        }
-      ]
-    }
-  ]
+	"info": {
+		"_postman_id": "digibank-dast-collection-v1",
+		"name": "DigiBank DAST Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 - Discovery",
+			"item": [
+				{
+					"name": "Check Swagger UI Exposure",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Workshop 2 hardened DigiBank to disable Swagger UI by default",
+									"// (springdoc.swagger-ui.enabled=false in application.yml/application-ci.yml).",
+									"// This check now validates that hardening stays in place: Swagger must",
+									"// NOT be exposed (404), rather than checking whether it happens to be on.",
+									"pm.test(\"Swagger UI is not exposed (404 Not Found)\", function () {",
+									"    pm.expect(pm.response.code).to.eql(404);",
+									"});",
+									"pm.test(\"No technical stacktrace exposed\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(\"Exception\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/swagger-ui.html",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"swagger-ui.html"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "02 - Nominal Scenarios",
+			"item": [
+				{
+					"name": "List Customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Valid Customer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var rand = Math.floor(100000 + Math.random() * 900000);",
+									"pm.environment.set(\"dynamicEmail\", \"user.\" + rand + \"@m2ibank.com\");",
+									"pm.environment.set(\"dynamicPhone\", \"+237699\" + rand);",
+									"pm.environment.set(\"dynamicNID\", \"CNI\" + rand);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Customer created with 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Dynamic DAST User\",\n  \"email\": \"{{dynamicEmail}}\",\n  \"phoneNumber\": \"{{dynamicPhone}}\",\n  \"nationalId\": \"{{dynamicNID}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					}
+				},
+				{
+					"name": "Execute Valid Transfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Transfer executed with 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 250.00,\n  \"description\": \"Valid DAST verification transfer\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transfers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transfers"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "03 - Negative & Security Scenarios",
+			"item": [
+				{
+					"name": "Reject Malformed Phone and National ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Rejected with 400 Bad Request\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"No technical stacktrace exposed\", function () {",
+									"    var text = pm.response.text().toLowerCase();",
+									"    pm.expect(text).to.not.include(\"stacktrace\");",
+									"    pm.expect(text).to.not.include(\"exception\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Bad\",\n  \"email\": \"invalid-email\",\n  \"phoneNumber\": \"abc\",\n  \"nationalId\": \"!@#\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject Non-Existent Customer ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Returns 404 Not Found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/customers/999999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"customers",
+								"999999"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject Self-Transfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Rejected with 400 Bad Request\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 1,\n  \"amount\": 500.00,\n  \"description\": \"Same account transfer\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transfers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transfers"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject Zero Amount Transfer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Rejected with 400 Bad Request\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sourceAccountId\": 1,\n  \"destinationAccountId\": 2,\n  \"amount\": 0.00,\n  \"description\": \"Zero transfer\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transfers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transfers"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
 }

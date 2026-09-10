@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * Workshop 2 remediation (SAST §3.4.2/§3.4.3): centralizes API error handling so that
@@ -46,6 +47,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.failure(message, null));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleNoResourceFound(NoResourceFoundException ex) {
+        // Spring's own "static resource not found" signal (e.g. an unmapped/disabled path
+        // such as swagger-ui.html when springdoc is turned off). Without this handler it
+        // would fall through to the generic Exception.class handler below and incorrectly
+        // surface as a 500, instead of the expected 404.
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure("Resource not found", null));
     }
 
     @ExceptionHandler(Exception.class)
