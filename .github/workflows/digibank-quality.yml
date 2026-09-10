@@ -24,6 +24,9 @@ jobs:
       - name: Build and test
         run: mvn clean verify
 
+      - name: Install artifacts to local repo (for Dependency-Check)
+        run: mvn clean install -DskipTests
+
       - name: Run OWASP Dependency-Check
         run: mvn org.owasp:dependency-check-maven:check
         env:
