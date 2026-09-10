@@ -274,10 +274,9 @@ SONAR_HOST_URL: http://localhost:9000
 
 ### 11.5 Documentation
 
-Complete usage guides:
+Usage guide:
 
 * **[GITHUB-ACTIONS-PIPELINE.md](GITHUB-ACTIONS-PIPELINE.md)**: Pipeline architecture, configuration, secrets, troubleshooting
-* **[WORKSHOP2-TRACEABILITY-REPORT.md](WORKSHOP2-TRACEABILITY-REPORT.md)**: Comprehensive findings, remediations, verification results
 
 ---
 
