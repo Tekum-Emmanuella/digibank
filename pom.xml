@@ -57,6 +57,7 @@
         <!-- Workshop 2: SAST tooling versions, centralized so every module/plugin stays in sync -->
         <sonar.maven.plugin.version>3.11.0.3922</sonar.maven.plugin.version>
         <dependency-check.version>10.0.4</dependency-check.version>
+        <dependency-check.skip>true</dependency-check.skip>
         <pitest.version>1.16.2</pitest.version>
         <pitest.junit5.plugin.version>1.2.1</pitest.junit5.plugin.version>
         <surefire.version>3.2.5</surefire.version>
@@ -152,6 +153,7 @@
                 <version>${dependency-check.version}</version>
                 <configuration>
                     <format>HTML</format>
+                    <skip>${dependency-check.skip}</skip>
                     <failBuildOnCVSS>7</failBuildOnCVSS>
                     <skipProvidedScope>true</skipProvidedScope>
                     <skipTestScope>true</skipTestScope>
@@ -172,14 +174,6 @@
                         <suppressionFile>${maven.multiModuleProjectDirectory}/dependency-check-suppressions.xml</suppressionFile>
                     </suppressionFiles>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- PITest: mutation testing to verify that unit tests actually protect business rules -->

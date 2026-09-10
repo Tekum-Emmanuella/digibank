@@ -1,0 +1,89 @@
+name: DigiBank Security Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop", "feat/**", "codex/**" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build-test-and-scan:
+    name: Build, dependency evidence, image scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Build and test DigiBank
+        run: mvn -B -ntp -Ddependency-check.skip=true clean verify
+
+      - name: Export Maven dependency tree
+        run: mvn -B -ntp -Ddependency-check.skip=true dependency:tree -DoutputFile=dependency-tree.txt
+
+      - name: Run OWASP Dependency-Check
+        if: ${{ env.NVD_API_KEY != '' }}
+        run: mvn -B -ntp -Ddependency-check.skip=false org.owasp:dependency-check-maven:check
+
+      - name: Record Dependency-Check prerequisite note
+        if: ${{ env.NVD_API_KEY == '' }}
+        run: |
+          mkdir -p target
+          cat > target/dependency-check-report.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+          <head><meta charset="utf-8"><title>Dependency-Check prerequisite</title></head>
+          <body>
+          <h1>OWASP Dependency-Check was not executed</h1>
+          <p>The workflow requires the repository secret <code>NVD_API_KEY</code>. Configure it and rerun the workflow to generate the full vulnerability report.</p>
+          </body>
+          </html>
+          HTML
+
+      - name: Build Docker image
+        run: docker build -t digibank:ci .
+
+      - name: Capture Docker image metadata
+        run: |
+          docker image inspect digibank:ci > docker-image-inspect.json
+          docker history digibank:ci --no-trunc > docker-image-history.txt
+
+      - name: Run Trivy image scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: digibank:ci
+          format: table
+          output: trivy-image-report.txt
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+          ignore-unfixed: true
+
+      - name: Upload Workshop 4 evidence artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: digibank-workshop-4-security-evidence
+          path: |
+            dependency-tree.txt
+            **/target/dependency-check-report.html
+            **/target/dependency-check-report.json
+            docker-image-inspect.json
+            docker-image-history.txt
+            trivy-image-report.txt
+          if-no-files-found: warn
+
