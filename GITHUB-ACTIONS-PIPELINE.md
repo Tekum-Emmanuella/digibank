@@ -54,7 +54,8 @@ mvn sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 - Requires GitHub secrets:
   - `SONAR_TOKEN`: Authentication token
   - `SONAR_HOST_URL`: SonarQube server URL (optional, defaults to localhost:9000)
-- Only runs on push (not on PRs from forks)
+- Runs on every push **and** pull request (`continue-on-error: true`, so a missing/unreachable
+  SonarQube server does not fail the overall pipeline)
 
 ## GitHub Secrets Configuration
 

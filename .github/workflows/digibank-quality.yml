@@ -60,7 +60,6 @@ jobs:
           retention-days: 30
 
       - name: SonarQube Analysis
-        if: github.event_name == 'push'
         run: >
           mvn sonar:sonar
           -Dsonar.projectKey=digibank-parent
