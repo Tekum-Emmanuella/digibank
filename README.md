@@ -237,10 +237,10 @@ mvn org.owasp:dependency-check-maven:check
 # Mutation testing for test suite quality
 mvn org.pitest:pitest-maven:mutationCoverage
 
-# SonarQube analysis (requires running SonarQube server)
-mvn sonar:sonar -Dsonar.projectKey=digibank-parent \
-  -Dsonar.host.url=http://localhost:9000 \
-  -Dsonar.login=<SONAR_TOKEN>
+# SonarCloud analysis (requires SONAR_TOKEN; no local server needed)
+mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+  -Dsonar.projectKey=digibank_sonar \
+  -Dsonar.token=<SONAR_TOKEN>
 ```
 
 ### 11.3 SAST Verification Results
@@ -266,11 +266,11 @@ To enable full SAST pipeline in GitHub Actions, configure these secrets (**Setti
 NVD_API_KEY: <your-nvd-api-key>
 ```
 
-**Optional (for SonarQube integration):**
+**Optional (for SonarCloud integration):**
 ```
-SONAR_TOKEN: sqa_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-SONAR_HOST_URL: http://localhost:9000
+SONAR_TOKEN: <your-sonarcloud-token>
 ```
+SonarCloud's project key (`digibank_sonar`) is hardcoded in the workflow; the analysis target (SonarCloud, organization) is resolved automatically from the `SONAR_TOKEN`, so no `SONAR_HOST_URL`/`SONAR_ORGANIZATION` secret is needed.
 
 ### 11.5 Documentation
 

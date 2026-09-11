@@ -46,16 +46,20 @@ mvn org.pitest:pitest-maven:mutationCoverage
 - Validates test coverage quality
 - Reports: `target/pit-reports/index.html`
 
-### 5. SonarQube Analysis (Optional)
+### 5. SonarQube Analysis (via SonarCloud)
 ```bash
-mvn sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+  -Dsonar.projectKey=digibank_sonar
 ```
-- Analyzes code quality and security
-- Requires GitHub secrets:
-  - `SONAR_TOKEN`: Authentication token
-  - `SONAR_HOST_URL`: SonarQube server URL (optional, defaults to localhost:9000)
-- Runs on every push **and** pull request (`continue-on-error: true`, so a missing/unreachable
-  SonarQube server does not fail the overall pipeline)
+- Analyzes code quality and security using [SonarCloud](https://sonarcloud.io) (hosted SonarQube) —
+  no self-hosted server required, so the GitHub-hosted runner can always reach it
+- Requires GitHub secret:
+  - `SONAR_TOKEN`: SonarCloud authentication token (generate from SonarCloud → My Account → Security), passed via the `SONAR_TOKEN` env var
+- Project key (`digibank_sonar`) is hardcoded in the workflow since it doesn't change; the target
+  organization/server is resolved automatically from the token, so no `sonar.organization` or
+  `sonar.host.url` flag is needed
+- Runs on every push **and** pull request (`continue-on-error: true`, so a missing token or a
+  transient SonarCloud outage does not fail the overall pipeline)
 
 ## GitHub Secrets Configuration
 
@@ -66,10 +70,9 @@ To enable all features, configure these secrets in GitHub repository settings (*
 NVD_API_KEY: your-nvd-api-key-here
 ```
 
-### Optional (for SonarQube integration):
+### Optional (for SonarCloud integration):
 ```
-SONAR_TOKEN: sqa_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-SONAR_HOST_URL: http://sonarqube.example.com:9000
+SONAR_TOKEN: <token generated in SonarCloud>
 ```
 
 ## Artifacts
