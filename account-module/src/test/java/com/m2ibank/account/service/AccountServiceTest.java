@@ -155,7 +155,7 @@ class AccountServiceTest {
                 () -> accountService.getAccountById(99L)
         );
 
-        assertEquals("Account not found with id: 99", exception.getMessage());
+        assertEquals("Account not found", exception.getMessage());
     }
 
     @Test
@@ -254,6 +254,45 @@ class AccountServiceTest {
 
         assertEquals(new BigDecimal("100000.00"), account.getBalance());
         verify(accountRepository, never()).save(any(Account.class));
+    }
+
+    @Test
+    void shouldRejectDebitWhenAccountIsNull() {
+        // PITest hardening: kills the mutant that removes the validateAccount() call in
+        // debitAccount by asserting the exact business exception (not a bare NPE).
+        BusinessException exception = assertThrows(
+                BusinessException.class,
+                () -> accountService.debitAccount(null, BigDecimal.TEN)
+        );
+
+        assertEquals("Account is required", exception.getMessage());
+    }
+
+    @Test
+    void shouldRejectCreditWhenAccountIsNull() {
+        // PITest hardening: kills the mutant that removes the validateAccount() call in
+        // creditAccount by asserting the exact business exception (not a bare NPE).
+        BusinessException exception = assertThrows(
+                BusinessException.class,
+                () -> accountService.creditAccount(null, BigDecimal.TEN)
+        );
+
+        assertEquals("Account is required", exception.getMessage());
+    }
+
+    @Test
+    void shouldDebitAccountSuccessfullyWhenAmountEqualsExactBalance() {
+        // PITest hardening: kills the "changed conditional boundary" mutant on
+        // `balance.compareTo(amount) < 0` by covering the equality boundary explicitly:
+        // debiting the exact available balance must succeed and leave a zero balance,
+        // not be rejected as "insufficient".
+        Account account = existingAccount();
+        when(accountRepository.save(account)).thenReturn(account);
+
+        accountService.debitAccount(account, new BigDecimal("100000.00"));
+
+        assertEquals(new BigDecimal("0.00"), account.getBalance());
+        verify(accountRepository).save(account);
     }
 
     private AccountRequest accountRequest() {

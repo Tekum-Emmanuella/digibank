@@ -3,14 +3,22 @@ package com.m2ibank.web.exception;
 import com.m2ibank.common.api.ApiResponse;
 import com.m2ibank.common.exception.BusinessException;
 import com.m2ibank.common.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Centralizes API error handling into a single normalized {@link ApiResponse} envelope,
+ * ensuring unexpected failures are never leaked to the client.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleNotFound(ResourceNotFoundException ex) {
@@ -38,6 +46,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGenericException(Exception ex) {
+        // Full exception is logged server-side only; client gets a generic message.
+        log.error("Unhandled exception while processing request", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.failure("An unexpected system error occurred", null));
     }

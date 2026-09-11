@@ -127,6 +127,67 @@ class TransferServiceTest {
         assertEquals(0, responses.size());
     }
 
+    @Test
+    void shouldRejectTransferWhenAmountIsZero() {
+        // PITest hardening: kills the "changed conditional boundary" mutant on
+        // `amount.signum() <= 0` by covering the equality boundary — a zero amount must
+        // be rejected, not silently accepted as a mutated `< 0` check would allow.
+        TransferRequest request = new TransferRequest();
+        request.setSourceAccountId(1L);
+        request.setDestinationAccountId(2L);
+        request.setAmount(BigDecimal.ZERO);
+
+        BusinessException exception = assertThrows(BusinessException.class,
+                () -> transferService.createTransfer(request));
+
+        assertEquals("Transfer amount must be greater than zero", exception.getMessage());
+        verify(accountService, never()).getAccountEntityById(any());
+        verify(transferRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldRejectTransferWhenDescriptionExceedsMaxLength() {
+        TransferRequest request = new TransferRequest();
+        request.setSourceAccountId(1L);
+        request.setDestinationAccountId(2L);
+        request.setAmount(new BigDecimal("100.00"));
+        request.setDescription("a".repeat(256));
+
+        BusinessException exception = assertThrows(BusinessException.class,
+                () -> transferService.createTransfer(request));
+
+        assertEquals("Transfer description is too long", exception.getMessage());
+        verify(accountService, never()).getAccountEntityById(any());
+        verify(transferRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldExecuteTransferWhenDescriptionEqualsMaxLength() {
+        // PITest hardening: kills the "changed conditional boundary" mutant on
+        // `description.length() > MAX_DESCRIPTION_LENGTH` by covering the equality
+        // boundary — a description of exactly 255 characters must be accepted.
+        Account sourceAccount = new Account("DB-SRC12345", new BigDecimal("10000.00"), AccountType.CURRENT, 1L);
+        Account destinationAccount = new Account("DB-DST12345", new BigDecimal("5000.00"), AccountType.SAVINGS, 2L);
+        String maxLengthDescription = "a".repeat(255);
+        Transfer savedTransfer = new Transfer(1L, 2L, new BigDecimal("100.00"), maxLengthDescription);
+        setId(savedTransfer, 100L);
+
+        when(accountService.getAccountEntityById(1L)).thenReturn(sourceAccount);
+        when(accountService.getAccountEntityById(2L)).thenReturn(destinationAccount);
+        when(transferRepository.save(any(Transfer.class))).thenReturn(savedTransfer);
+
+        TransferRequest request = new TransferRequest();
+        request.setSourceAccountId(1L);
+        request.setDestinationAccountId(2L);
+        request.setAmount(new BigDecimal("100.00"));
+        request.setDescription(maxLengthDescription);
+
+        TransferResponse response = transferService.createTransfer(request);
+
+        assertEquals(maxLengthDescription, response.getDescription());
+        verify(transferRepository).save(any(Transfer.class));
+    }
+
     private void setId(Transfer transfer, long id) {
         try {
             Field idField = Transfer.class.getDeclaredField("id");

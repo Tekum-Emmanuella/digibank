@@ -20,7 +20,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,7 +35,6 @@ class CustomerServiceTest {
 
     @Test
     void createCustomer_Success() {
-        // Given
         CustomerRequest request = new CustomerRequest();
         request.setFullName("John Doe");
         request.setEmail("john.doe@example.com");
@@ -51,23 +49,19 @@ class CustomerServiceTest {
         when(customerRepository.findByPhoneNumber(request.getPhoneNumber())).thenReturn(Optional.empty());
         when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
 
-        // When
         CustomerResponse response = customerService.createCustomer(request);
 
-        // Then
         assertNotNull(response);
         assertEquals(1L, response.getId());
         assertEquals("John Doe", response.getFullName());
         assertEquals("john.doe@example.com", response.getEmail());
         assertEquals("+1234567890", response.getPhoneNumber());
-        assertEquals("ID123456", response.getNationalId());
         assertNotNull(response.getCreatedAt());
         verify(customerRepository).save(any(Customer.class));
     }
 
     @Test
     void createCustomer_DuplicateEmail_ThrowsException() {
-        // Given
         CustomerRequest request = new CustomerRequest();
         request.setFullName("John Doe");
         request.setEmail("existing@example.com");
@@ -79,16 +73,14 @@ class CustomerServiceTest {
 
         when(customerRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(existingCustomer));
 
-        // When & Then
         BusinessException exception = assertThrows(BusinessException.class, () -> {
             customerService.createCustomer(request);
         });
-        assertEquals("A customer with this email already exists", exception.getMessage());
+        assertEquals("A customer with these details already exists", exception.getMessage());
     }
 
     @Test
     void createCustomer_DuplicatePhoneNumber_ThrowsException() {
-        // Given
         CustomerRequest request = new CustomerRequest();
         request.setFullName("John Doe");
         request.setEmail("john.doe@example.com");
@@ -101,29 +93,25 @@ class CustomerServiceTest {
         when(customerRepository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
         when(customerRepository.findByPhoneNumber(request.getPhoneNumber())).thenReturn(Optional.of(existingCustomer));
 
-        // When & Then
         BusinessException exception = assertThrows(BusinessException.class, () -> {
             customerService.createCustomer(request);
         });
-        assertEquals("A customer with this phone number already exists", exception.getMessage());
+        assertEquals("A customer with these details already exists", exception.getMessage());
     }
 
     @Test
     void getCustomerById_NotFound_ThrowsException() {
-        // Given
         Long customerId = 999L;
         when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
 
-        // When & Then
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
             customerService.getCustomerById(customerId);
         });
-        assertTrue(exception.getMessage().contains("Customer not found with id 999"));
+        assertEquals("Customer not found", exception.getMessage());
     }
 
     @Test
     void getAllCustomers_Success() {
-        // Given
         Customer customer1 = new Customer("John Doe", "john@example.com", "+1111111111", "ID111");
         customer1.setId(1L);
         customer1.setCreatedAt(LocalDateTime.now());
@@ -135,10 +123,8 @@ class CustomerServiceTest {
         List<Customer> customers = Arrays.asList(customer1, customer2);
         when(customerRepository.findAll()).thenReturn(customers);
 
-        // When
         List<CustomerResponse> responses = customerService.getAllCustomers();
 
-        // Then
         assertNotNull(responses);
         assertEquals(2, responses.size());
         

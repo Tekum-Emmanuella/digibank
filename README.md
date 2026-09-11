@@ -208,7 +208,81 @@ The continuous integration pipeline is defined in `.github/workflows/digibank-ci
 
 ---
 
-## 11. Submission Artifacts & Verification Proofs
+## 11. Static Application Security Testing (SAST) Pipeline — Workshop 2
+
+DigiBank implements a comprehensive **Static Application Security Testing (SAST) pipeline** as per the DevSecOps curriculum (Workshop 2: "Static Security Analysis of DigiBank's Source Code").
+
+### 11.1 Automated Quality & Security Pipeline
+
+The SAST pipeline is defined in `.github/workflows/digibank-quality.yml`:
+* **Triggers**: Automatically on `push` and `pull_request` against `main`, `master`, `develop` branches.
+* **Jobs**:
+  1. **Build & Test**: `mvn clean verify` (37 Cucumber scenarios + unit tests)
+  2. **OWASP Dependency-Check**: Scans all dependencies for known CVEs (CVSS ≥ 7.0)
+  3. **PITest Mutation Testing**: Validates test suite quality (62-100% mutation coverage)
+  4. **SonarQube Analysis**: Code quality, code smells, security hotspots (optional, requires secrets)
+  5. **Artifact Upload**: Auto-publishes reports to GitHub Actions artifacts
+
+### 11.2 Running SAST Locally
+
+Before pushing, validate locally:
+
+```bash
+# Full build & testing
+mvn clean verify
+
+# Dependency vulnerability scanning
+mvn org.owasp:dependency-check-maven:check
+
+# Mutation testing for test suite quality
+mvn org.pitest:pitest-maven:mutationCoverage
+
+# SonarCloud analysis (requires SONAR_TOKEN; no local server needed)
+export SONAR_TOKEN=<your-sonarcloud-token>
+mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+  -Dsonar.projectKey=digibank_sonar \
+  -Dsonar.organization=digibank \
+  -Dsonar.host.url=https://sonarcloud.io
+```
+
+### 11.3 SAST Verification Results
+
+Current status (Workshop 2 deliverables):
+
+| Tool | Status | Findings |
+|------|--------|----------|
+| **Build & Tests** | ✅ PASS | 37/37 Cucumber scenarios passed |
+| **Dependency-Check** | ✅ PASS | 0 unresolved CVSS ≥ 7.0 CVEs (3 false positives documented) |
+| **PITest** | ✅ PASS | 62-100% mutation coverage (excellent test quality) |
+| **SonarQube** | ✅ PASS | 0 bugs, 0 vulnerabilities, 0 security hotspots |
+| **Code Quality** | ✅ PASS | 5 SonarQube code smells fixed |
+
+> Full details on the vulnerability categories identified, remediations applied, and dependency upgrades (Spring Boot 3.3.13 → 3.5.16, Tomcat → 10.1.59) are documented in [`WORKSHOP2-TRACEABILITY-REPORT.md`](WORKSHOP2-TRACEABILITY-REPORT.md).
+
+### 11.4 GitHub Secrets Configuration
+
+To enable full SAST pipeline in GitHub Actions, configure these secrets (**Settings → Secrets and variables → Actions**):
+
+**Required:**
+```
+NVD_API_KEY: <your-nvd-api-key>
+```
+
+**Optional (for SonarCloud integration):**
+```
+SONAR_TOKEN: <your-sonarcloud-token>
+```
+SonarCloud's project key (`digibank_sonar`) and organization key (`digibank`) are hardcoded in the workflow; only the `SONAR_TOKEN` secret is needed.
+
+### 11.5 Documentation
+
+Usage guide:
+
+* **[GITHUB-ACTIONS-PIPELINE.md](GITHUB-ACTIONS-PIPELINE.md)**: Pipeline architecture, configuration, secrets, troubleshooting
+
+---
+
+## 12. Submission Artifacts & Verification Proofs
 
 Teacher-required verification artifacts and submission screenshots are cataloged in the [`docs/evidence/`](docs/evidence/) directory:
 

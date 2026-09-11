@@ -26,16 +26,69 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>3.3.2</spring.boot.version>
+        <!-- Workshop 2 (dependency-scan-update): 3.3.x is EOL as of 3.3.13 (no further patch
+             releases), and OWASP Dependency-Check flagged real CVEs in spring-boot,
+             spring-core and the transitively-pulled log4j-api that only newer Spring Boot
+             lines address (spring-boot 3.5.16 manages log4j2 2.24.3 and Spring Framework
+             6.2.19). Moved to the latest 3.5.x release to fix these without a major-version
+             jump to Spring Boot 4.x. See dependency-check-suppressions.xml for details. -->
+        <spring.boot.version>3.5.16</spring.boot.version>
+        <!-- Workshop 2: spring-boot 3.5.16 manages tomcat-embed-core 10.1.55, which
+             Dependency-Check flags with several CVSS >= 7 CVEs. Overriding the BOM-managed
+             tomcat.version property to the latest available 10.1.x patch release fixes them
+             without waiting for the next Spring Boot release. -->
+        <tomcat.version>10.1.59</tomcat.version>
+        <!-- Workshop 2: bumped to the latest patch release within
+             the SAME minor line for every dependency, which only pulls in bug/security fixes
+             (no behavioral/API changes), keeping upgrade risk low without a full regression
+             cycle. -->
         <springdoc.version>2.6.0</springdoc.version>
-        <swagger-annotations.version>2.2.22</swagger-annotations.version>
-        <cucumber.version>7.18.0</cucumber.version>
-        <junit.version>5.10.2</junit.version>
+        <swagger-annotations.version>2.2.29</swagger-annotations.version>
+        <cucumber.version>7.18.1</cucumber.version>
+        <junit.version>5.10.5</junit.version>
+        <!-- Actual resolved JUnit Platform version (spring-boot-dependencies manages
+             junit-jupiter via its own "junit-jupiter.version" property, not the
+             "junit.version" above, so it resolves to 5.12.2 / platform 1.12.2 regardless of
+             junit.version). Used to align pitest-junit5-plugin's bundled
+             junit-platform-launcher with the actually-resolved junit-platform-engine. -->
+        <junit-platform.version>1.12.2</junit-platform.version>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+
+        <!-- Workshop 2: SAST tooling versions, centralized so every module/plugin stays in sync -->
+        <sonar.maven.plugin.version>3.11.0.3922</sonar.maven.plugin.version>
+        <dependency-check.version>10.0.4</dependency-check.version>
+        <pitest.version>1.16.2</pitest.version>
+        <pitest.junit5.plugin.version>1.2.1</pitest.junit5.plugin.version>
+        <surefire.version>3.2.5</surefire.version>
+
+        <!-- Default SonarQube coordinates; override sonar.host.url/sonar.login on the CLI or via env vars -->
+        <sonar.projectKey>digibank-parent</sonar.projectKey>
+        <sonar.projectName>DigiBank Parent</sonar.projectName>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Explicit override, declared before the Spring Boot BOM import so it takes
+                 precedence: pin Tomcat to a newer patch than the one spring-boot-dependencies
+                 currently manages (10.1.55), which OWASP Dependency-Check flagged with
+                 several CVSS >= 7 CVEs. Property override alone does not work here because
+                 the imported BOM already resolves its own ${tomcat.version} placeholder. -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-el</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -73,7 +126,16 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.5</version>
+                    <version>${surefire.version}</version>
+                    <configuration>
+                        <!-- Avoids module-path ambiguities that can otherwise confuse JUnit5/SAST tooling -->
+                        <useModulePath>false</useModulePath>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar.maven.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -81,6 +143,82 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <!-- OWASP Dependency-Check: fails the build if a dependency has a known CVE with CVSS >= 7 -->
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${dependency-check.version}</version>
+                <configuration>
+                    <format>HTML</format>
+                    <failBuildOnCVSS>7</failBuildOnCVSS>
+                    <skipProvidedScope>true</skipProvidedScope>
+                    <skipTestScope>true</skipTestScope>
+                    <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+                    <!-- DigiBank is a pure Java/Maven project with no bundled JS libraries,
+                         so the RetireJS analyzer (JS library CVE scanning) is irrelevant here.
+                         Disabling it also avoids build failures when GitHub raw content
+                         (jsrepository.json) is unreachable/rate-limited (503). -->
+                    <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
+                    <!-- OSS Index (Sonatype) analyzer requires its own separate account/
+                         credentials, which are not configured here, and its unauthenticated
+                         calls are being rate-limited/rejected (401) by the service. NVD is
+                         DigiBank's authoritative CVE source (via nvdApiKey above), so this
+                         analyzer is disabled rather than left to fail the build on an
+                         unrelated, unconfigured integration. -->
+                    <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
+                    <suppressionFiles>
+                        <suppressionFile>${maven.multiModuleProjectDirectory}/dependency-check-suppressions.xml</suppressionFile>
+                    </suppressionFiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- PITest: mutation testing to verify that unit tests actually protect business rules -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${pitest.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>${pitest.junit5.plugin.version}</version>
+                    </dependency>
+                    <!-- pitest-junit5-plugin bundles its own (older) junit-platform-launcher,
+                         which is incompatible with the junit-platform-engine actually
+                         resolved here (1.12.2, via spring-boot-starter-test's managed
+                         junit-jupiter 5.12.2) and fails coverage generation with
+                         "OutputDirectoryProvider not available". Forcing a matching launcher
+                         version fixes it. -->
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-launcher</artifactId>
+                        <version>${junit-platform.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <targetClasses>
+                        <param>com.m2ibank.*.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>com.m2ibank.*.*</param>
+                    </targetTests>
+                    <threads>4</threads>
+                    <outputFormats>
+                        <param>HTML</param>
+                        <param>XML</param>
+                    </outputFormats>
+                    <timestampedReports>false</timestampedReports>
+                </configuration>
             </plugin>
         </plugins>
     </build>

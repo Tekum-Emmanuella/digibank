@@ -2,24 +2,26 @@ package com.m2ibank.customer.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * The response intentionally omits {@code nationalId}: returning a national identifier
+ * to every API consumer by default is excessive data exposure (data minimization).
+ */
 public class CustomerResponse {
 
     private Long id;
     private String fullName;
     private String email;
     private String phoneNumber;
-    private String nationalId;
     private LocalDateTime createdAt;
 
     public CustomerResponse() {
     }
 
-    public CustomerResponse(Long id, String fullName, String email, String phoneNumber, String nationalId, LocalDateTime createdAt) {
+    public CustomerResponse(Long id, String fullName, String email, String phoneNumber, LocalDateTime createdAt) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.nationalId = nationalId;
         this.createdAt = createdAt;
     }
 
@@ -53,14 +55,6 @@ public class CustomerResponse {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getNationalId() {
-        return nationalId;
-    }
-
-    public void setNationalId(String nationalId) {
-        this.nationalId = nationalId;
     }
 
     public LocalDateTime getCreatedAt() {

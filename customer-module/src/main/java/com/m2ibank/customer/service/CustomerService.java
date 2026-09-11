@@ -6,13 +6,20 @@ import com.m2ibank.customer.dto.CustomerRequest;
 import com.m2ibank.customer.dto.CustomerResponse;
 import com.m2ibank.customer.entity.Customer;
 import com.m2ibank.customer.repository.CustomerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
+
+    private static final Logger log = LoggerFactory.getLogger(CustomerService.class);
+
+    // Generic message avoids revealing which field (email/phone) already exists.
+    private static final String DUPLICATE_CUSTOMER_MESSAGE = "A customer with these details already exists";
+    private static final String CUSTOMER_NOT_FOUND_MESSAGE = "Customer not found";
 
     private final CustomerRepository customerRepository;
 
@@ -23,12 +30,14 @@ public class CustomerService {
     public CustomerResponse createCustomer(CustomerRequest request) {
         customerRepository.findByEmail(request.getEmail())
             .ifPresent(c -> {
-                throw new BusinessException("A customer with this email already exists");
+                log.info("Customer creation rejected: email already registered (customerId={})", c.getId());
+                throw new BusinessException(DUPLICATE_CUSTOMER_MESSAGE);
             });
 
         customerRepository.findByPhoneNumber(request.getPhoneNumber())
             .ifPresent(c -> {
-                throw new BusinessException("A customer with this phone number already exists");
+                log.info("Customer creation rejected: phone number already registered (customerId={})", c.getId());
+                throw new BusinessException(DUPLICATE_CUSTOMER_MESSAGE);
             });
 
         Customer customer = new Customer(
@@ -44,14 +53,17 @@ public class CustomerService {
 
     public CustomerResponse getCustomerById(Long id) {
         Customer customer = customerRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id " + id));
+            .orElseThrow(() -> {
+                log.info("Customer lookup failed: no customer with id={}", id);
+                return new ResourceNotFoundException(CUSTOMER_NOT_FOUND_MESSAGE);
+            });
         return mapToResponse(customer);
     }
 
     public List<CustomerResponse> getAllCustomers() {
         return customerRepository.findAll().stream()
             .map(this::mapToResponse)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public boolean existsByEmail(String email) {
@@ -60,13 +72,19 @@ public class CustomerService {
 
     public CustomerResponse getCustomerByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email)
-            .orElseThrow(() -> new ResourceNotFoundException("Customer not found with email " + email));
+            .orElseThrow(() -> {
+                log.info("Customer lookup failed: no customer with the given email");
+                return new ResourceNotFoundException(CUSTOMER_NOT_FOUND_MESSAGE);
+            });
         return mapToResponse(customer);
     }
 
     public Customer getCustomerEntityById(Long id) {
         return customerRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id " + id));
+            .orElseThrow(() -> {
+                log.info("Customer lookup failed: no customer with id={}", id);
+                return new ResourceNotFoundException(CUSTOMER_NOT_FOUND_MESSAGE);
+            });
     }
 
     private CustomerResponse mapToResponse(Customer customer) {
@@ -75,7 +93,6 @@ public class CustomerService {
             customer.getFullName(),
             customer.getEmail(),
             customer.getPhoneNumber(),
-            customer.getNationalId(),
             customer.getCreatedAt()
         );
     }
