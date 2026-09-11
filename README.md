@@ -238,9 +238,11 @@ mvn org.owasp:dependency-check-maven:check
 mvn org.pitest:pitest-maven:mutationCoverage
 
 # SonarCloud analysis (requires SONAR_TOKEN; no local server needed)
+export SONAR_TOKEN=<your-sonarcloud-token>
 mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
   -Dsonar.projectKey=digibank_sonar \
-  -Dsonar.token=<SONAR_TOKEN>
+  -Dsonar.organization=digibank \
+  -Dsonar.host.url=https://sonarcloud.io
 ```
 
 ### 11.3 SAST Verification Results
@@ -270,7 +272,7 @@ NVD_API_KEY: <your-nvd-api-key>
 ```
 SONAR_TOKEN: <your-sonarcloud-token>
 ```
-SonarCloud's project key (`digibank_sonar`) is hardcoded in the workflow; the analysis target (SonarCloud, organization) is resolved automatically from the `SONAR_TOKEN`, so no `SONAR_HOST_URL`/`SONAR_ORGANIZATION` secret is needed.
+SonarCloud's project key (`digibank_sonar`) and organization key (`digibank`) are hardcoded in the workflow; only the `SONAR_TOKEN` secret is needed.
 
 ### 11.5 Documentation
 
