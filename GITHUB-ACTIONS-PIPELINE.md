@@ -60,6 +60,9 @@ mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
 - Project key (`digibank_sonar`) and organization key (`digibank`) are hardcoded in the workflow
   since they don't change; `sonar.host.url` must be set explicitly to `https://sonarcloud.io` —
   the plugin does **not** auto-detect SonarCloud and otherwise defaults to `http://localhost:9000`
+- The SonarCloud scanner engine requires **JDK ≥ 21** (independent of the project's own JDK 17
+  compile target), so a dedicated "Set up JDK 21 for SonarQube scanner" step switches `JAVA_HOME`
+  right before this step; the earlier build/test/dependency-check/PITest steps still run on JDK 17
 - Runs on every push **and** pull request (`continue-on-error: true`, so a missing token or a
   transient SonarCloud outage does not fail the overall pipeline)
 

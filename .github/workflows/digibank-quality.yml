@@ -69,6 +69,12 @@ jobs:
           path: "**/target/surefire-reports"
           retention-days: 30
 
+      - name: Set up JDK 21 for SonarQube scanner
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
       - name: SonarQube Analysis
         run: >
           mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
