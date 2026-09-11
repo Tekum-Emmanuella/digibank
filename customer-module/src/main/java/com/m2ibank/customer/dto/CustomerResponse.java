@@ -3,11 +3,8 @@ package com.m2ibank.customer.dto;
 import java.time.LocalDateTime;
 
 /**
- * Workshop 2 remediation (SAST §3.5.2/§4.4): the response no longer exposes
- * {@code nationalId}. Returning a customer's national identifier to every API consumer by
- * default is excessive data exposure (data minimization principle); this field should only
- * ever be surfaced through a future, authorization-aware endpoint if a legitimate business
- * need arises.
+ * The response intentionally omits {@code nationalId}: returning a national identifier
+ * to every API consumer by default is excessive data exposure (data minimization).
  */
 public class CustomerResponse {
 
@@ -16,8 +13,7 @@ public class CustomerResponse {
     private String email;
     private String phoneNumber;
     private LocalDateTime createdAt;
- 
-    // Required for JSON deserialization and JPA operations
+
     public CustomerResponse() {
     }
 

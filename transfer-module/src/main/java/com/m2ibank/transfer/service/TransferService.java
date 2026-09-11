@@ -31,11 +31,7 @@ public class TransferService {
     public TransferResponse createTransfer(TransferRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 
-        // Workshop 2 remediation (SAST §3.7.1/§4.5): the transfer service is one of
-        // DigiBank's most business-critical paths, so it must not blindly trust that the
-        // DTO validation layer (@NotNull/@DecimalMin/@Size) was actually enforced upstream
-        // (e.g. if this method is ever called directly, from a test, or from a future
-        // internal caller). Every precondition is therefore re-checked defensively here.
+        // Re-checked defensively in case DTO validation was bypassed by a direct caller.
         if (request.getSourceAccountId() == null || request.getDestinationAccountId() == null) {
             throw new BusinessException("Source and destination accounts are required");
         }

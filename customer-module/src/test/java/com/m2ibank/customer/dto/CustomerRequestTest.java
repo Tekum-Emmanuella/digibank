@@ -6,9 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Workshop 2 remediation coverage: verifies the normalization behaviour added to the
- * setters (trim/case handling) that hardens validation against whitespace/casing bypass,
- * and guards against null input causing a NullPointerException instead of a clean null.
+ * Verifies setter normalization (trim/case handling) and null-safety on {@link CustomerRequest}.
  */
 class CustomerRequestTest {
 

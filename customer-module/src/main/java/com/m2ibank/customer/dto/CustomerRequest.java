@@ -6,10 +6,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 /**
- * Workshop 2 remediation (SAST §4.3): the original DTO relied only on {@code @Size} for
- * phoneNumber/nationalId, which bounds length but not shape, allowing arbitrary characters
- * to reach the business layer. Each sensitive field now carries an explicit {@code @Pattern}
- * constraint, and setters normalize input (trim/case) so validation is not bypassed by
+ * Sensitive fields carry explicit {@code @Pattern} constraints (beyond {@code @Size})
+ * and setters normalize input (trim/case) so validation cannot be bypassed by
  * incidental whitespace or casing.
  */
 public class CustomerRequest {

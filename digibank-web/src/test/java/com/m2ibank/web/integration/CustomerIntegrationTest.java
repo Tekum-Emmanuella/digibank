@@ -55,7 +55,6 @@ class CustomerIntegrationTest {
 
     @Test
     void shouldRejectDuplicateEmailAndReturn400() throws Exception {
-        // Create first customer
         CustomerRequest firstRequest = new CustomerRequest();
         firstRequest.setFullName("John Doe");
         firstRequest.setEmail("duplicate@example.com");
@@ -67,7 +66,6 @@ class CustomerIntegrationTest {
                 .content(objectMapper.writeValueAsString(firstRequest)))
                 .andExpect(status().isCreated());
 
-        // Attempt to create second customer with same email
         CustomerRequest secondRequest = new CustomerRequest();
         secondRequest.setFullName("Jane Doe");
         secondRequest.setEmail("duplicate@example.com");
@@ -84,7 +82,6 @@ class CustomerIntegrationTest {
 
     @Test
     void shouldRejectDuplicatePhoneAndReturn400() throws Exception {
-        // Create first customer
         CustomerRequest firstRequest = new CustomerRequest();
         firstRequest.setFullName("John Doe");
         firstRequest.setEmail("john@example.com");
@@ -96,7 +93,6 @@ class CustomerIntegrationTest {
                 .content(objectMapper.writeValueAsString(firstRequest)))
                 .andExpect(status().isCreated());
 
-        // Attempt to create second customer with same phone
         CustomerRequest secondRequest = new CustomerRequest();
         secondRequest.setFullName("Jane Doe");
         secondRequest.setEmail("jane@example.com");

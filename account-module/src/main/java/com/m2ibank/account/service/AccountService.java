@@ -82,8 +82,6 @@ public class AccountService {
         return accountRepository.findById(id)
                 .orElseThrow(() -> {
                     log.info("Account lookup failed: no account with id={}", id);
-                    // Workshop 2 remediation (SAST §3.6.3): the identifier is no longer
-                    // echoed back to the client to avoid facilitating account ID enumeration.
                     return new ResourceNotFoundException(ACCOUNT_NOT_FOUND_MESSAGE);
                 });
     }

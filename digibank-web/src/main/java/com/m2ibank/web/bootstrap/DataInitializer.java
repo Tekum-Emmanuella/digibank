@@ -15,11 +15,9 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 /**
- * Seeds demonstration customers and accounts for local/educational use (Workshop §4.6).
- * Idempotent by demo email: Alice/Brian are created only when those emails are missing.
- * Disabled by default: Flyway's V2__insert_seed_data.sql now owns demo data seeding
- * (Workshop 1, §7.9). Enable with digibank.demo-data.enabled=true for ad hoc local
- * demonstrations that fall outside the Flyway-managed dataset.
+ * Seeds demonstration customers and accounts for local/educational use. Idempotent by
+ * demo email. Disabled by default (Flyway's V2__insert_seed_data.sql owns demo data
+ * seeding); enable with digibank.demo-data.enabled=true for ad hoc local demonstrations.
  */
 @Component
 @ConditionalOnProperty(name = "digibank.demo-data.enabled", havingValue = "true")

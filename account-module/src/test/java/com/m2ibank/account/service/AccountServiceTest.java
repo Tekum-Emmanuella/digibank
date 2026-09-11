@@ -155,8 +155,6 @@ class AccountServiceTest {
                 () -> accountService.getAccountById(99L)
         );
 
-        // Workshop 2 remediation: the identifier is no longer included in the client-facing
-        // message (prevents account ID enumeration via error responses).
         assertEquals("Account not found", exception.getMessage());
     }
 

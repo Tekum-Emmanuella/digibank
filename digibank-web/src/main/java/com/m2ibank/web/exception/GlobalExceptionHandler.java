@@ -12,12 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Workshop 2 remediation (SAST §3.4.2/§3.4.3): centralizes API error handling so that
- * every controller returns the same normalized {@link ApiResponse} envelope, and so that
- * unexpected failures are never leaked to the client. Business/not-found messages are kept
- * short and generic at the point where they are thrown (see CustomerService/AccountService),
- * this handler's job is simply to map them to the right HTTP status without adding any
- * further internal detail (e.g. stack traces) to the response body.
+ * Centralizes API error handling into a single normalized {@link ApiResponse} envelope,
+ * ensuring unexpected failures are never leaked to the client.
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -50,10 +46,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGenericException(Exception ex) {
-        // The full exception (including stack trace) is only ever written to the server
-        // logs. The client only ever receives a generic message: this prevents leaking
-        // internal implementation details (class names, SQL, file paths, library versions...)
-        // that could otherwise help an attacker map the system.
+        // Full exception is logged server-side only; client gets a generic message.
         log.error("Unhandled exception while processing request", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.failure("An unexpected system error occurred", null));

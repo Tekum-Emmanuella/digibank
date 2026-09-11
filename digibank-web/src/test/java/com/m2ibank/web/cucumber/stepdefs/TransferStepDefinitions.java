@@ -40,7 +40,6 @@ public class TransferStepDefinitions {
 
     @Given("a customer with email {string} exists with a CURRENT account")
     public void aCustomerWithEmailExistsWithACurrentAccount(String email) {
-        // Create customer
         CustomerRequest customerRequest = new CustomerRequest();
         customerRequest.setFullName("Test Customer");
         customerRequest.setEmail(email);
@@ -49,7 +48,6 @@ public class TransferStepDefinitions {
         
         CustomerResponse customer = customerService.createCustomer(customerRequest);
 
-        // Create account for customer
         AccountRequest accountRequest = new AccountRequest();
         accountRequest.setCustomerId(customer.getId());
         accountRequest.setAccountType(AccountType.CURRENT);
@@ -61,7 +59,6 @@ public class TransferStepDefinitions {
 
     @Given("a customer with email {string} exists with a CURRENT account having balance {double}")
     public void aCustomerWithEmailExistsWithACurrentAccountHavingBalance(String email, Double balance) {
-        // Create customer
         CustomerRequest customerRequest = new CustomerRequest();
         customerRequest.setFullName("Test Customer");
         customerRequest.setEmail(email);

@@ -17,10 +17,7 @@ public class CustomerService {
 
     private static final Logger log = LoggerFactory.getLogger(CustomerService.class);
 
-    // Workshop 2 remediation (SAST §3.5.3/§3.5.4): a single generic message is used for both
-    // the email and phone number collisions so the API response never confirms *which*
-    // field already exists in the database (that distinction would allow enumeration of
-    // registered emails/phone numbers). The precise reason is only ever written to the logs.
+    // Generic message avoids revealing which field (email/phone) already exists.
     private static final String DUPLICATE_CUSTOMER_MESSAGE = "A customer with these details already exists";
     private static final String CUSTOMER_NOT_FOUND_MESSAGE = "Customer not found";
 
