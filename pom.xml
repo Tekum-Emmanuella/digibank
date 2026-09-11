@@ -60,6 +60,7 @@
         <pitest.version>1.16.2</pitest.version>
         <pitest.junit5.plugin.version>1.2.1</pitest.junit5.plugin.version>
         <surefire.version>3.2.5</surefire.version>
+        <jacoco.version>0.8.12</jacoco.version>
 
         <!-- Default SonarQube coordinates; override sonar.host.url/sonar.login on the CLI or via env vars -->
         <sonar.projectKey>digibank-parent</sonar.projectKey>
@@ -137,12 +138,36 @@
                     <artifactId>sonar-maven-plugin</artifactId>
                     <version>${sonar.maven.plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
 
             <!-- OWASP Dependency-Check: fails the build if a dependency has a known CVE with CVSS >= 7 -->
