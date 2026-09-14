@@ -1,0 +1,99 @@
+name: DigiBank Security Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop", "feat/**", "codex/**" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build-test-and-scan:
+    name: Build, dependency evidence, image scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Build and test DigiBank
+        run: mvn -B -ntp -Ddependency-check.skip=true clean verify
+
+      - name: Export Maven dependency tree
+        run: mvn -B -ntp -Ddependency-check.skip=true dependency:tree -DoutputFile=dependency-tree.txt
+
+      - name: Run OWASP Dependency-Check
+        id: dependency_check
+        if: ${{ env.NVD_API_KEY != '' }}
+        timeout-minutes: 12
+        continue-on-error: true
+        run: mvn -B -ntp -Ddependency-check.skip=false org.owasp:dependency-check-maven:check
+
+      - name: Record Dependency-Check prerequisite note
+        if: ${{ always() }}
+        run: |
+          if find . -path '*/target/dependency-check-report.html' -size +0c | grep -q .; then
+            echo "Dependency-Check report already exists."
+            exit 0
+          fi
+
+          mkdir -p target
+          cat > target/dependency-check-report.html <<HTML
+          <!doctype html>
+          <html lang="en">
+          <head><meta charset="utf-8"><title>Dependency-Check prerequisite</title></head>
+          <body>
+          <h1>OWASP Dependency-Check report was not generated</h1>
+          <p>The Workshop 4 pipeline keeps the full Dependency-Check scan as evidence, but the NVD database synchronization can exceed the GitHub Actions time budget on a cold runner.</p>
+          <p>Status recorded by workflow: <code>${{ steps.dependency_check.outcome || 'skipped' }}</code>.</p>
+          <p>For a complete local report, run <code>mvn -B -ntp -Ddependency-check.skip=false org.owasp:dependency-check-maven:check</code> with a valid <code>NVD_API_KEY</code>.</p>
+          </body>
+          </html>
+          HTML
+
+      - name: Build Docker image
+        run: docker build -t digibank:ci .
+
+      - name: Capture Docker image metadata
+        run: |
+          docker image inspect digibank:ci > docker-image-inspect.json
+          docker history digibank:ci --no-trunc > docker-image-history.txt
+
+      - name: Run Trivy image scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: digibank:ci
+          format: table
+          output: trivy-image-report.txt
+          severity: HIGH,CRITICAL
+          exit-code: "0"
+          ignore-unfixed: true
+          scanners: vuln
+
+      - name: Upload Workshop 4 evidence artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: digibank-workshop-4-security-evidence
+          path: |
+            dependency-tree.txt
+            **/target/dependency-check-report.html
+            **/target/dependency-check-report.json
+            docker-image-inspect.json
+            docker-image-history.txt
+            trivy-image-report.txt
+          if-no-files-found: warn
