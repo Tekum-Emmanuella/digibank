@@ -1,0 +1,672 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Build Order:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] DigiBank Parent                                                    [pom]
+[[1;34mINFO[m] Common Module                                                      [jar]
+[[1;34mINFO[m] Customer Module                                                    [jar]
+[[1;34mINFO[m] Account Module                                                     [jar]
+[[1;34mINFO[m] Transfer Module                                                    [jar]
+[[1;34mINFO[m] DigiBank Web                                                       [jar]
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------------< [0;36mcom.m2ibank:digibank-parent[0;1m >---------------------[m
+[[1;34mINFO[m] [1mBuilding DigiBank Parent 1.0.0-SNAPSHOT                            [1/6][m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mdigibank-parent[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m---------------------< [0;36mcom.m2ibank:common-module[0;1m >----------------------[m
+[[1;34mINFO[m] [1mBuilding Common Module 1.0.0-SNAPSHOT                              [2/6][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mcommon-module[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/blessing-ws/devsecops/workshop1/digibank/common-module/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mcommon-module[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/common-module/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:compile[m [1m(default-compile)[m @ [36mcommon-module[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged source code[m.
+[[1;34mINFO[m] Compiling 3 source files with javac [debug parameters release 17] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mcommon-module[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/common-module/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:testCompile[m [1m(default-testCompile)[m @ [36mcommon-module[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.2.5:test[m [1m(default-test)[m @ [36mcommon-module[0;1m ---[m
+[[1;34mINFO[m] No tests to run.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.4:jar[m [1m(default-jar)[m @ [36mcommon-module[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/blessing-ws/devsecops/workshop1/digibank/common-module/target/common-module-1.0.0-SNAPSHOT.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------------< [0;36mcom.m2ibank:customer-module[0;1m >---------------------[m
+[[1;34mINFO[m] [1mBuilding Customer Module 1.0.0-SNAPSHOT                            [3/6][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mcustomer-module[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/blessing-ws/devsecops/workshop1/digibank/customer-module/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mcustomer-module[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/customer-module/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:compile[m [1m(default-compile)[m @ [36mcustomer-module[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 6 source files with javac [debug parameters release 17] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mcustomer-module[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/customer-module/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:testCompile[m [1m(default-testCompile)[m @ [36mcustomer-module[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 1 source file with javac [debug parameters release 17] to target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.2.5:test[m [1m(default-test)[m @ [36mcustomer-module[0;1m ---[m
+[[1;34mINFO[m] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[[1;34mINFO[m] 
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m]  T E S T S
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m] Running com.m2ibank.customer.service.[1mCustomerServiceTest[m
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m5[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.288 s -- in com.m2ibank.customer.service.[1mCustomerServiceTest[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Results:
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1;32mTests run: 5, Failures: 0, Errors: 0, Skipped: 0[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.4:jar[m [1m(default-jar)[m @ [36mcustomer-module[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/blessing-ws/devsecops/workshop1/digibank/customer-module/target/customer-module-1.0.0-SNAPSHOT.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m---------------------< [0;36mcom.m2ibank:account-module[0;1m >---------------------[m
+[[1;34mINFO[m] [1mBuilding Account Module 1.0.0-SNAPSHOT                             [4/6][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36maccount-module[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/blessing-ws/devsecops/workshop1/digibank/account-module/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36maccount-module[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/account-module/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:compile[m [1m(default-compile)[m @ [36maccount-module[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 7 source files with javac [debug parameters release 17] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36maccount-module[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/account-module/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:testCompile[m [1m(default-testCompile)[m @ [36maccount-module[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 7 source files with javac [debug parameters release 17] to target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.2.5:test[m [1m(default-test)[m @ [36maccount-module[0;1m ---[m
+[[1;34mINFO[m] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[[1;34mINFO[m] 
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m]  T E S T S
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m] Running com.m2ibank.account.dto.[1mAccountResponseTest[m
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m1[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s -- in com.m2ibank.account.dto.[1mAccountResponseTest[m
+[[1;34mINFO[m] Running com.m2ibank.account.dto.[1mAccountRequestValidationTest[m
+17:54:02.448 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 8.0.1.Final
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m6[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.318 s -- in com.m2ibank.account.dto.[1mAccountRequestValidationTest[m
+[[1;34mINFO[m] Running com.m2ibank.account.service.[1mAccountServiceTest[m
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m14[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.357 s -- in com.m2ibank.account.service.[1mAccountServiceTest[m
+[[1;34mINFO[m] Running com.m2ibank.account.repository.[1mAccountRepositoryTest[m
+17:54:04.217 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.m2ibank.account.repository.AccountRepositoryTest]: AccountRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+17:54:04.395 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.m2ibank.account.AccountModuleTestApplication for test class com.m2ibank.account.repository.AccountRepositoryTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.2)
+
+2026-09-07T17:54:04.762+01:00  INFO 413644 --- [           main] c.m.a.repository.AccountRepositoryTest   : Starting AccountRepositoryTest using Java 17.0.20 with PID 413644 (started by blessing-ws in /home/blessing-ws/devsecops/workshop1/digibank/account-module)
+2026-09-07T17:54:04.764+01:00  INFO 413644 --- [           main] c.m.a.repository.AccountRepositoryTest   : No active profile set, falling back to 1 default profile: "default"
+2026-09-07T17:54:05.249+01:00  INFO 413644 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-07T17:54:05.311+01:00  INFO 413644 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55 ms. Found 1 JPA repository interface.
+2026-09-07T17:54:05.368+01:00  INFO 413644 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-07T17:54:05.555+01:00  INFO 413644 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:f5086193-bd6a-45f2-a622-5a5d9e4c3389;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-07T17:54:05.867+01:00  INFO 413644 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-07T17:54:05.915+01:00  INFO 413644 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-09-07T17:54:05.950+01:00  INFO 413644 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-07T17:54:06.039+01:00  INFO 413644 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-07T17:54:06.561+01:00  INFO 413644 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: drop table if exists accounts cascade 
+Hibernate: create table accounts (balance numeric(19,2) not null, created_at timestamp(6) not null, customer_id bigint not null, id bigint generated by default as identity, account_number varchar(50) not null, account_type enum ('CURRENT','SAVINGS') not null, primary key (id), constraint uk_accounts_account_number unique (account_number))
+2026-09-07T17:54:06.586+01:00  INFO 413644 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-07T17:54:06.985+01:00  INFO 413644 --- [           main] c.m.a.repository.AccountRepositoryTest   : Started AccountRepositoryTest in 2.526 seconds (process running for 5.339)
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: select a1_0.id,a1_0.account_number,a1_0.account_type,a1_0.balance,a1_0.created_at,a1_0.customer_id from accounts a1_0 where a1_0.account_number=? and a1_0.customer_id=?
+Hibernate: select a1_0.id,a1_0.account_number,a1_0.account_type,a1_0.balance,a1_0.created_at,a1_0.customer_id from accounts a1_0 where a1_0.account_number=? and a1_0.customer_id=?
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: select a1_0.id,a1_0.account_number,a1_0.account_type,a1_0.balance,a1_0.created_at,a1_0.customer_id from accounts a1_0 where a1_0.customer_id=?
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: select a1_0.id,a1_0.account_number,a1_0.account_type,a1_0.balance,a1_0.created_at,a1_0.customer_id from accounts a1_0 where a1_0.account_number=?
+Hibernate: select a1_0.id,a1_0.account_number,a1_0.account_type,a1_0.balance,a1_0.created_at,a1_0.customer_id from accounts a1_0 where a1_0.account_number=?
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m5[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.330 s -- in com.m2ibank.account.repository.[1mAccountRepositoryTest[m
+[[1;34mINFO[m] Running com.m2ibank.account.entity.[1mAccountTest[m
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m9[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s -- in com.m2ibank.account.entity.[1mAccountTest[m
+[[1;34mINFO[m] Running com.m2ibank.account.controller.[1mAccountControllerTest[m
+2026-09-07T17:54:07.398+01:00  INFO 413644 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.m2ibank.account.controller.AccountControllerTest]: AccountControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-07T17:54:07.426+01:00  INFO 413644 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.m2ibank.account.AccountModuleTestApplication for test class com.m2ibank.account.controller.AccountControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.2)
+
+2026-09-07T17:54:07.469+01:00  INFO 413644 --- [           main] c.m.a.controller.AccountControllerTest   : Starting AccountControllerTest using Java 17.0.20 with PID 413644 (started by blessing-ws in /home/blessing-ws/devsecops/workshop1/digibank/account-module)
+2026-09-07T17:54:07.470+01:00  INFO 413644 --- [           main] c.m.a.controller.AccountControllerTest   : No active profile set, falling back to 1 default profile: "default"
+2026-09-07T17:54:08.184+01:00  INFO 413644 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-07T17:54:08.185+01:00  INFO 413644 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-07T17:54:08.189+01:00  INFO 413644 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-07T17:54:08.204+01:00  INFO 413644 --- [           main] c.m.a.controller.AccountControllerTest   : Started AccountControllerTest in 0.769 seconds (process running for 6.558)
+2026-09-07T17:54:08.563+01:00  WARN 413644 --- [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.m2ibank.common.api.ApiResponse<com.m2ibank.account.dto.AccountResponse>> com.m2ibank.account.controller.AccountController.createAccount(com.m2ibank.account.dto.AccountRequest) with 2 errors: [Field error in object 'accountRequest' on field 'customerId': rejected value [null]; codes [NotNull.accountRequest.customerId,NotNull.customerId,NotNull.java.lang.Long,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [accountRequest.customerId,customerId]; arguments []; default message [customerId]]; default message [Customer ID is required]] [Field error in object 'accountRequest' on field 'initialBalance': rejected value [-1.00]; codes [DecimalMin.accountRequest.initialBalance,DecimalMin.initialBalance,DecimalMin.java.math.BigDecimal,DecimalMin]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [accountRequest.initialBalance,initialBalance]; arguments []; default message [initialBalance],true,0.00]; default message [Initial balance must be greater than or equal to zero]] ]
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m4[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.176 s -- in com.m2ibank.account.controller.[1mAccountControllerTest[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Results:
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1;32mTests run: 39, Failures: 0, Errors: 0, Skipped: 0[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.4:jar[m [1m(default-jar)[m @ [36maccount-module[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/blessing-ws/devsecops/workshop1/digibank/account-module/target/account-module-1.0.0-SNAPSHOT.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------------< [0;36mcom.m2ibank:transfer-module[0;1m >---------------------[m
+[[1;34mINFO[m] [1mBuilding Transfer Module 1.0.0-SNAPSHOT                            [5/6][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mtransfer-module[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/blessing-ws/devsecops/workshop1/digibank/transfer-module/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mtransfer-module[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/transfer-module/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:compile[m [1m(default-compile)[m @ [36mtransfer-module[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 6 source files with javac [debug parameters release 17] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mtransfer-module[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/transfer-module/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:testCompile[m [1m(default-testCompile)[m @ [36mtransfer-module[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 8 source files with javac [debug parameters release 17] to target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.2.5:test[m [1m(default-test)[m @ [36mtransfer-module[0;1m ---[m
+[[1;34mINFO[m] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[[1;34mINFO[m] 
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m]  T E S T S
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m] Running com.m2ibank.transfer.dto.[1mTransferResponseTest[m
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m1[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in com.m2ibank.transfer.dto.[1mTransferResponseTest[m
+[[1;34mINFO[m] Running com.m2ibank.transfer.dto.[1mTransferRequestTest[m
+17:54:10.003 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 8.0.1.Final
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m8[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.322 s -- in com.m2ibank.transfer.dto.[1mTransferRequestTest[m
+[[1;34mINFO[m] Running com.m2ibank.transfer.service.[1mTransferServiceIntegrationTest[m
+17:54:10.297 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.m2ibank.transfer.service.TransferServiceIntegrationTest]: TransferServiceIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+17:54:10.384 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.m2ibank.transfer.TransferModuleTestApplication for test class com.m2ibank.transfer.service.TransferServiceIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.2)
+
+2026-09-07T17:54:10.714+01:00  INFO 413815 --- [           main] c.m.t.s.TransferServiceIntegrationTest   : Starting TransferServiceIntegrationTest using Java 17.0.20 with PID 413815 (started by blessing-ws in /home/blessing-ws/devsecops/workshop1/digibank/transfer-module)
+2026-09-07T17:54:10.717+01:00  INFO 413815 --- [           main] c.m.t.s.TransferServiceIntegrationTest   : No active profile set, falling back to 1 default profile: "default"
+2026-09-07T17:54:11.132+01:00  INFO 413815 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-07T17:54:11.176+01:00  INFO 413815 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 37 ms. Found 3 JPA repository interfaces.
+2026-09-07T17:54:11.274+01:00  INFO 413815 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-07T17:54:11.451+01:00  INFO 413815 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:bfca8a46-7d98-436f-9324-f5bc72b0d7fe;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-07T17:54:11.803+01:00  INFO 413815 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-07T17:54:11.848+01:00  INFO 413815 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-09-07T17:54:11.888+01:00  INFO 413815 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-07T17:54:12.215+01:00  INFO 413815 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-07T17:54:13.058+01:00  INFO 413815 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: drop table if exists accounts cascade 
+Hibernate: drop table if exists customers cascade 
+Hibernate: drop table if exists transfers cascade 
+Hibernate: create table accounts (balance numeric(19,2) not null, created_at timestamp(6) not null, customer_id bigint not null, id bigint generated by default as identity, account_number varchar(50) not null, account_type enum ('CURRENT','SAVINGS') not null, primary key (id), constraint uk_accounts_account_number unique (account_number))
+Hibernate: create table customers (created_at timestamp(6) not null, id bigint generated by default as identity, national_id varchar(30) not null, phone_number varchar(30) not null unique, full_name varchar(120) not null, email varchar(150) not null unique, primary key (id))
+Hibernate: create table transfers (amount numeric(19,2) not null, created_at timestamp(6) not null, destination_account_id bigint not null, id bigint generated by default as identity, source_account_id bigint not null, description varchar(255), primary key (id))
+2026-09-07T17:54:13.091+01:00  INFO 413815 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-07T17:54:13.488+01:00  INFO 413815 --- [           main] c.m.t.s.TransferServiceIntegrationTest   : Started TransferServiceIntegrationTest in 3.048 seconds (process running for 4.226)
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: select count(*) from transfers t1_0
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: select t1_0.id,t1_0.amount,t1_0.created_at,t1_0.description,t1_0.destination_account_id,t1_0.source_account_id from transfers t1_0 where t1_0.source_account_id=? or t1_0.destination_account_id=?
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into accounts (account_number,account_type,balance,created_at,customer_id,id) values (?,?,?,?,?,default)
+Hibernate: select count(*) from transfers t1_0
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m3[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.155 s -- in com.m2ibank.transfer.service.[1mTransferServiceIntegrationTest[m
+[[1;34mINFO[m] Running com.m2ibank.transfer.service.[1mTransferServiceTest[m
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m4[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.617 s -- in com.m2ibank.transfer.service.[1mTransferServiceTest[m
+[[1;34mINFO[m] Running com.m2ibank.transfer.repository.[1mTransferRepositoryTest[m
+2026-09-07T17:54:15.027+01:00  INFO 413815 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.m2ibank.transfer.repository.TransferRepositoryTest]: TransferRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-07T17:54:15.102+01:00  INFO 413815 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.m2ibank.transfer.TransferModuleTestApplication for test class com.m2ibank.transfer.repository.TransferRepositoryTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.2)
+
+2026-09-07T17:54:15.207+01:00  INFO 413815 --- [           main] c.m.t.repository.TransferRepositoryTest  : Starting TransferRepositoryTest using Java 17.0.20 with PID 413815 (started by blessing-ws in /home/blessing-ws/devsecops/workshop1/digibank/transfer-module)
+2026-09-07T17:54:15.208+01:00  INFO 413815 --- [           main] c.m.t.repository.TransferRepositoryTest  : No active profile set, falling back to 1 default profile: "default"
+2026-09-07T17:54:15.501+01:00  INFO 413815 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-07T17:54:15.518+01:00  INFO 413815 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 1 JPA repository interface.
+2026-09-07T17:54:15.556+01:00  INFO 413815 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-07T17:54:15.604+01:00  INFO 413815 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:378cf6af-5c60-42ba-8ef4-2d2d53ae3cd7;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-07T17:54:15.662+01:00  INFO 413815 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-07T17:54:15.669+01:00  INFO 413815 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-07T17:54:15.695+01:00  INFO 413815 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-07T17:54:15.861+01:00  INFO 413815 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: drop table if exists transfers cascade 
+Hibernate: create table transfers (amount numeric(19,2) not null, created_at timestamp(6) not null, destination_account_id bigint not null, id bigint generated by default as identity, source_account_id bigint not null, description varchar(255), primary key (id))
+2026-09-07T17:54:15.871+01:00  INFO 413815 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-07T17:54:16.015+01:00  INFO 413815 --- [           main] c.m.t.repository.TransferRepositoryTest  : Started TransferRepositoryTest in 0.9 seconds (process running for 6.754)
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: select t1_0.id,t1_0.amount,t1_0.created_at,t1_0.description,t1_0.destination_account_id,t1_0.source_account_id from transfers t1_0 where t1_0.source_account_id=? or t1_0.destination_account_id=?
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: select t1_0.id,t1_0.amount,t1_0.created_at,t1_0.description,t1_0.destination_account_id,t1_0.source_account_id from transfers t1_0 where t1_0.source_account_id=? or t1_0.destination_account_id=?
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: select t1_0.id,t1_0.amount,t1_0.created_at,t1_0.description,t1_0.destination_account_id,t1_0.source_account_id from transfers t1_0 where t1_0.source_account_id=? or t1_0.destination_account_id=?
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: select t1_0.id,t1_0.amount,t1_0.created_at,t1_0.description,t1_0.destination_account_id,t1_0.source_account_id from transfers t1_0 where t1_0.source_account_id=? or t1_0.destination_account_id=?
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: select t1_0.id,t1_0.amount,t1_0.created_at,t1_0.description,t1_0.destination_account_id,t1_0.source_account_id from transfers t1_0 where t1_0.source_account_id=? or t1_0.destination_account_id=?
+Hibernate: insert into transfers (amount,created_at,description,destination_account_id,source_account_id,id) values (?,?,?,?,?,default)
+Hibernate: select t1_0.id,t1_0.amount,t1_0.created_at,t1_0.description,t1_0.destination_account_id,t1_0.source_account_id from transfers t1_0 where t1_0.source_account_id=? or t1_0.destination_account_id=?
+Hibernate: select t1_0.id,t1_0.amount,t1_0.created_at,t1_0.description,t1_0.destination_account_id,t1_0.source_account_id from transfers t1_0 where t1_0.source_account_id=? or t1_0.destination_account_id=?
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m8[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.201 s -- in com.m2ibank.transfer.repository.[1mTransferRepositoryTest[m
+[[1;34mINFO[m] Running com.m2ibank.transfer.entity.[1mTransferTest[m
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m5[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.m2ibank.transfer.entity.[1mTransferTest[m
+[[1;34mINFO[m] Running com.m2ibank.transfer.controller.[1mTransferControllerTest[m
+2026-09-07T17:54:16.245+01:00  INFO 413815 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.m2ibank.transfer.controller.TransferControllerTest]: TransferControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-07T17:54:16.280+01:00  INFO 413815 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.m2ibank.transfer.TransferModuleTestApplication for test class com.m2ibank.transfer.controller.TransferControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.2)
+
+2026-09-07T17:54:16.341+01:00  INFO 413815 --- [           main] c.m.t.controller.TransferControllerTest  : Starting TransferControllerTest using Java 17.0.20 with PID 413815 (started by blessing-ws in /home/blessing-ws/devsecops/workshop1/digibank/transfer-module)
+2026-09-07T17:54:16.341+01:00  INFO 413815 --- [           main] c.m.t.controller.TransferControllerTest  : No active profile set, falling back to 1 default profile: "default"
+2026-09-07T17:54:17.373+01:00  INFO 413815 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-07T17:54:17.374+01:00  INFO 413815 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-07T17:54:17.380+01:00  INFO 413815 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 3 ms
+2026-09-07T17:54:17.410+01:00  INFO 413815 --- [           main] c.m.t.controller.TransferControllerTest  : Started TransferControllerTest in 1.114 seconds (process running for 8.148)
+2026-09-07T17:54:17.625+01:00  WARN 413815 --- [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.m2ibank.common.api.ApiResponse<com.m2ibank.transfer.dto.TransferResponse>> com.m2ibank.transfer.controller.TransferController.createTransfer(com.m2ibank.transfer.dto.TransferRequest): [Field error in object 'transferRequest' on field 'amount': rejected value [0.00]; codes [DecimalMin.transferRequest.amount,DecimalMin.amount,DecimalMin.java.math.BigDecimal,DecimalMin]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [transferRequest.amount,amount]; arguments []; default message [amount],true,0.01]; default message [Transfer amount must be greater than zero]] ]
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m3[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.506 s -- in com.m2ibank.transfer.controller.[1mTransferControllerTest[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Results:
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1;32mTests run: 32, Failures: 0, Errors: 0, Skipped: 0[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.4:jar[m [1m(default-jar)[m @ [36mtransfer-module[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/blessing-ws/devsecops/workshop1/digibank/transfer-module/target/transfer-module-1.0.0-SNAPSHOT.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------------< [0;36mcom.m2ibank:digibank-web[0;1m >----------------------[m
+[[1;34mINFO[m] [1mBuilding DigiBank Web 1.0.0-SNAPSHOT                               [6/6][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.5:clean[m [1m(default-clean)[m @ [36mdigibank-web[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/blessing-ws/devsecops/workshop1/digibank/digibank-web/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mdigibank-web[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 4 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:compile[m [1m(default-compile)[m @ [36mdigibank-web[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 5 source files with javac [debug parameters release 17] to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mdigibank-web[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/blessing-ws/devsecops/workshop1/digibank/digibank-web/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.13.0:testCompile[m [1m(default-testCompile)[m @ [36mdigibank-web[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 2 source files with javac [debug parameters release 17] to target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.2.5:test[m [1m(default-test)[m @ [36mdigibank-web[0;1m ---[m
+[[1;34mINFO[m] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[[1;34mINFO[m] 
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m]  T E S T S
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m] Running com.m2ibank.web.[1mDigiBankApplicationTest[m
+17:54:18.912 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.m2ibank.web.DigiBankApplicationTest]: DigiBankApplicationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+17:54:19.012 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.m2ibank.web.DigiBankApplication for test class com.m2ibank.web.DigiBankApplicationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.2)
+
+2026-09-07T17:54:19.424+01:00  INFO 413988 --- [digibank] [           main] c.m2ibank.web.DigiBankApplicationTest    : Starting DigiBankApplicationTest using Java 17.0.20 with PID 413988 (started by blessing-ws in /home/blessing-ws/devsecops/workshop1/digibank/digibank-web)
+2026-09-07T17:54:19.426+01:00  INFO 413988 --- [digibank] [           main] c.m2ibank.web.DigiBankApplicationTest    : The following 1 profile is active: "test"
+2026-09-07T17:54:20.188+01:00  INFO 413988 --- [digibank] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-07T17:54:20.282+01:00  INFO 413988 --- [digibank] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 81 ms. Found 3 JPA repository interfaces.
+2026-09-07T17:54:21.313+01:00  INFO 413988 --- [digibank] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-07T17:54:21.400+01:00  INFO 413988 --- [digibank] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-09-07T17:54:21.447+01:00  INFO 413988 --- [digibank] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-07T17:54:21.821+01:00  INFO 413988 --- [digibank] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-07T17:54:21.854+01:00  INFO 413988 --- [digibank] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-07T17:54:21.989+01:00  INFO 413988 --- [digibank] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:digibanktestdb user=SA
+2026-09-07T17:54:21.990+01:00  INFO 413988 --- [digibank] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-07T17:54:22.711+01:00  INFO 413988 --- [digibank] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-07T17:54:22.723+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    drop table if exists accounts cascade 
+2026-09-07T17:54:22.726+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    drop table if exists customers cascade 
+2026-09-07T17:54:22.727+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    drop table if exists transfers cascade 
+2026-09-07T17:54:22.731+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    create table accounts (
+        balance numeric(19,2) not null,
+        created_at timestamp(6) not null,
+        customer_id bigint not null,
+        id bigint generated by default as identity,
+        account_number varchar(50) not null,
+        account_type enum ('CURRENT','SAVINGS') not null,
+        primary key (id),
+        constraint uk_accounts_account_number unique (account_number)
+    )
+2026-09-07T17:54:22.741+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    create table customers (
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        national_id varchar(30) not null,
+        phone_number varchar(30) not null unique,
+        full_name varchar(120) not null,
+        email varchar(150) not null unique,
+        primary key (id)
+    )
+2026-09-07T17:54:22.744+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    create table transfers (
+        amount numeric(19,2) not null,
+        created_at timestamp(6) not null,
+        destination_account_id bigint not null,
+        id bigint generated by default as identity,
+        source_account_id bigint not null,
+        description varchar(255),
+        primary key (id)
+    )
+2026-09-07T17:54:22.749+01:00  INFO 413988 --- [digibank] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-07T17:54:23.563+01:00  INFO 413988 --- [digibank] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2026-09-07T17:54:24.334+01:00  INFO 413988 --- [digibank] [           main] c.m2ibank.web.DigiBankApplicationTest    : Started DigiBankApplicationTest in 5.189 seconds (process running for 5.972)
+2026-09-07T17:54:24.568+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.email=?
+2026-09-07T17:54:24.601+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.email=?
+2026-09-07T17:54:24.603+01:00  INFO 413988 --- [digibank] [           main] c.m2ibank.web.bootstrap.DataInitializer  : Seeding DigiBank demonstration customers and accounts
+2026-09-07T17:54:24.605+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.email=?
+2026-09-07T17:54:24.608+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.phone_number=?
+2026-09-07T17:54:24.631+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        customers
+        (created_at, email, full_name, national_id, phone_number, id) 
+    values
+        (?, ?, ?, ?, ?, default)
+2026-09-07T17:54:24.651+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.email=?
+2026-09-07T17:54:24.653+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.phone_number=?
+2026-09-07T17:54:24.655+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        customers
+        (created_at, email, full_name, national_id, phone_number, id) 
+    values
+        (?, ?, ?, ?, ?, default)
+2026-09-07T17:54:24.664+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.id=?
+2026-09-07T17:54:24.669+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.account_type,
+        a1_0.balance,
+        a1_0.created_at,
+        a1_0.customer_id 
+    from
+        accounts a1_0 
+    where
+        a1_0.customer_id=?
+2026-09-07T17:54:24.672+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.id=?
+2026-09-07T17:54:24.675+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.account_type,
+        a1_0.balance,
+        a1_0.created_at,
+        a1_0.customer_id 
+    from
+        accounts a1_0 
+    where
+        a1_0.account_number=?
+2026-09-07T17:54:24.686+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        accounts
+        (account_number, account_type, balance, created_at, customer_id, id) 
+    values
+        (?, ?, ?, ?, ?, default)
+2026-09-07T17:54:24.689+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.id=?
+2026-09-07T17:54:24.691+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.account_type,
+        a1_0.balance,
+        a1_0.created_at,
+        a1_0.customer_id 
+    from
+        accounts a1_0 
+    where
+        a1_0.customer_id=?
+2026-09-07T17:54:24.692+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.created_at,
+        c1_0.email,
+        c1_0.full_name,
+        c1_0.national_id,
+        c1_0.phone_number 
+    from
+        customers c1_0 
+    where
+        c1_0.id=?
+2026-09-07T17:54:24.694+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    select
+        a1_0.id,
+        a1_0.account_number,
+        a1_0.account_type,
+        a1_0.balance,
+        a1_0.created_at,
+        a1_0.customer_id 
+    from
+        accounts a1_0 
+    where
+        a1_0.account_number=?
+2026-09-07T17:54:24.696+01:00 DEBUG 413988 --- [digibank] [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        accounts
+        (account_number, account_type, balance, created_at, customer_id, id) 
+    values
+        (?, ?, ?, ?, ?, default)
+2026-09-07T17:54:24.697+01:00  INFO 413988 --- [digibank] [           main] c.m2ibank.web.bootstrap.DataInitializer  : Demo data ready: customers id=1 (Alice), id=2 (Brian) with CURRENT and SAVINGS accounts
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m1[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.284 s -- in com.m2ibank.web.[1mDigiBankApplicationTest[m
+[[1;34mINFO[m] Running com.m2ibank.web.controller.[1mHomeControllerTest[m
+2026-09-07T17:54:25.096+01:00  INFO 413988 --- [digibank] [           main] o.s.mock.web.MockServletContext          : Initializing Spring TestDispatcherServlet ''
+2026-09-07T17:54:25.097+01:00  INFO 413988 --- [digibank] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-07T17:54:25.099+01:00  INFO 413988 --- [digibank] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m1[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.073 s -- in com.m2ibank.web.controller.[1mHomeControllerTest[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Results:
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1;32mTests run: 2, Failures: 0, Errors: 0, Skipped: 0[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.4:jar[m [1m(default-jar)[m @ [36mdigibank-web[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/blessing-ws/devsecops/workshop1/digibank/digibank-web/target/digibank-web-1.0.0-SNAPSHOT.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mspring-boot-maven-plugin:3.3.2:repackage[m [1m(default)[m @ [36mdigibank-web[0;1m ---[m
+[[1;34mINFO[m] Replacing main artifact /home/blessing-ws/devsecops/workshop1/digibank/digibank-web/target/digibank-web-1.0.0-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[[1;34mINFO[m] The original artifact has been renamed to /home/blessing-ws/devsecops/workshop1/digibank/digibank-web/target/digibank-web-1.0.0-SNAPSHOT.jar.original
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Summary for DigiBank Parent 1.0.0-SNAPSHOT:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] DigiBank Parent .................................... [1;32mSUCCESS[m [  0.135 s]
+[[1;34mINFO[m] Common Module ...................................... [1;32mSUCCESS[m [  1.554 s]
+[[1;34mINFO[m] Customer Module .................................... [1;32mSUCCESS[m [  3.221 s]
+[[1;34mINFO[m] Account Module ..................................... [1;32mSUCCESS[m [  7.996 s]
+[[1;34mINFO[m] Transfer Module .................................... [1;32mSUCCESS[m [  9.188 s]
+[[1;34mINFO[m] DigiBank Web ....................................... [1;32mSUCCESS[m [  7.754 s]
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  30.177 s
+[[1;34mINFO[m] Finished at: 2026-09-07T17:54:25+01:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
