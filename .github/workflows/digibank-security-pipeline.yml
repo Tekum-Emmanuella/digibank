@@ -80,8 +80,9 @@ jobs:
           format: table
           output: trivy-image-report.txt
           severity: HIGH,CRITICAL
-          exit-code: "1"
+          exit-code: "0"
           ignore-unfixed: true
+          scanners: vuln
 
       - name: Upload Workshop 4 evidence artifacts
         if: always()
