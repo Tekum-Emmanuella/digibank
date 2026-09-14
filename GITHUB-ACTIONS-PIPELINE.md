@@ -49,7 +49,7 @@ mvn org.pitest:pitest-maven:mutationCoverage
 ### 5. SonarQube Analysis (via SonarCloud)
 ```bash
 mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-  -Dsonar.projectKey=digibank_sonar \
+  -Dsonar.projectKey=digibank \
   -Dsonar.organization=digibank \
   -Dsonar.host.url=https://sonarcloud.io
 ```
@@ -57,7 +57,7 @@ mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
   no self-hosted server required, so the GitHub-hosted runner can always reach it
 - Requires GitHub secret:
   - `SONAR_TOKEN`: SonarCloud authentication token (generate from SonarCloud → My Account → Security), passed via the `SONAR_TOKEN` env var
-- Project key (`digibank_sonar`) and organization key (`digibank`) are hardcoded in the workflow
+- Project key (`digibank`) and organization key (`digibank`) are hardcoded in the workflow
   since they don't change; `sonar.host.url` must be set explicitly to `https://sonarcloud.io` —
   the plugin does **not** auto-detect SonarCloud and otherwise defaults to `http://localhost:9000`
 - The SonarCloud scanner engine requires **JDK ≥ 21** (independent of the project's own JDK 17
